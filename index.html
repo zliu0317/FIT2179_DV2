@@ -172,7 +172,49 @@ footer strong.footer-title{color:var(--ob-gold);}
   .s-title{white-space:normal;}
 }
 </style>
-<script src="world_110m.js"></script>
+<script>
+// Load world GeoJSON from CDN and expose as WORLD_GEOJSON global
+(function(){
+  fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
+    .then(r=>r.json())
+    .then(topo=>{
+      // Convert TopoJSON to GeoJSON using inline micro-converter (no library needed)
+      // world-atlas countries-110m has a "countries" geometry collection
+      const arcs = topo.arcs;
+      function decodeArc(arcIdx) {
+        const reversed = arcIdx < 0;
+        const arc = arcs[reversed ? ~arcIdx : arcIdx];
+        let x=0, y=0;
+        const coords = arc.map(([dx,dy])=>{ x+=dx; y+=dy; return [x,y]; });
+        if(reversed) coords.reverse();
+        return coords;
+      }
+      function scaleCoord([x,y]) {
+        const s = topo.transform.scale, t = topo.transform.translate;
+        return [x*s[0]+t[0], y*s[1]+t[1]];
+      }
+      function ringToCoords(ring) {
+        return ring.flatMap(ai=>decodeArc(ai)).map(scaleCoord);
+      }
+      function geomToGeoJSON(geom) {
+        if(geom.type==='Polygon') return {type:'Polygon', coordinates: geom.arcs.map(ringToCoords)};
+        if(geom.type==='MultiPolygon') return {type:'MultiPolygon', coordinates: geom.arcs.map(p=>p.map(ringToCoords))};
+        return null;
+      }
+      // Build a name lookup from a separate fetch isn't needed — use numeric IDs
+      // We just need geometry; NAME isn't in 110m countries, so mark Australia by id=36
+      const features = topo.objects.countries.geometries.map(g=>({
+        type:'Feature',
+        properties:{ NAME: g.id==36?'Australia':'' },
+        geometry: geomToGeoJSON(g)
+      })).filter(f=>f.geometry);
+      window.WORLD_GEOJSON = {type:'FeatureCollection', features};
+      // Rebuild the canvas background now that country shapes are available
+      if(typeof buildBackground === 'function') buildBackground();
+    })
+    .catch(()=>{}); // silently fail — map still works without outlines
+})();
+</script>
 </head>
 <body>
 
@@ -1090,6 +1132,7 @@ function drawFlowMap() {
   }
 
   buildBackground();
+  window.buildBackground = buildBackground;
 
   // ── Animation loop: particles + destination pulse ──
   let pulseR=16, pulseDir=1;
