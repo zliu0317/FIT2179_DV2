@@ -1,0 +1,2011 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The World Comes to Study: Australia's International Student Story</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+<style>
+:root{
+  /* Ocean Breeze palette */
+  --ob-dark:#1F2041;    /* deep navy-purple – primary bg */
+  --ob-purple:#4B3F72;  /* mid purple – international (HE) */
+  --ob-purple2:#6B5CA5; /* lighter purple – international (VET) */
+  --ob-gold:#FFC857;    /* warm gold/yellow – shared */
+  --ob-teal:#119DA4;    /* bright teal – international */
+  --ob-teal2:#19647E;   /* deep teal – international 2 */
+
+  --gold:#FFC857;--gold-l:#FFD980;
+  --navy:#1F2041;--navy-m:#2A2855;--navy-l:#332F6A;
+  --cream:#EEF0F5;--cream-d:#D8DCE8;--rust:#C0392B;--slate:#8A93A8;
+  --mint:#F1FAEE;--navy:#1D3557;--steel:#457B9D;--aqua:#A8DADC;
+  --text:#1F2041;--mid:#4B3F72;
+  --max-w:980px;--pad:56px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:#F1FAEE;color:#1D3557;font-family:'DM Sans',sans-serif;font-weight:300;font-size:15px;line-height:1.8;overflow-x:hidden;}
+
+/* HERO */
+.hero{background:#1D3557;color:var(--cream);padding:90px var(--pad) 72px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-180px;right:-120px;width:560px;height:560px;border-radius:50%;background:radial-gradient(circle,rgba(255,200,87,0.12) 0%,transparent 70%);}
+.hero::after{content:'';position:absolute;bottom:-100px;left:-80px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(17,157,164,0.1) 0%,transparent 70%);}
+.hero-inner{max-width:var(--max-w);margin:0 auto;position:relative;z-index:1;text-align:center;}
+.hero-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:4px;text-transform:uppercase;color:var(--ob-gold);margin-bottom:18px;}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(38px,6vw,76px);font-weight:900;line-height:1.05;max-width:680px;margin:0 auto 24px;}
+.hero h1 em{font-style:italic;color:var(--ob-gold);}
+.hero-sub{font-size:15px;max-width:500px;color:rgba(238,240,245,0.68);line-height:1.9;margin:0 auto 52px;}
+.hero-stats{display:flex;gap:48px;flex-wrap:wrap;justify-content:center;}
+.stat-n{font-family:'Playfair Display',serif;font-size:46px;font-weight:700;color:var(--ob-gold);line-height:1;}
+.stat-l{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(238,240,245,0.48);margin-top:5px;}
+
+/* SECTION WRAPPER — alternating mint cream (#F1FAEE) vs dark navy (#1D3557) */
+.section{padding:68px var(--pad);color:var(--cream);}
+
+/* NAVY sections: 1, 3, 5 */
+.section-navy{background:#F1FAEE;}
+.section-navy .chart-wrap{background:rgba(255,255,255,0.55);border:1px solid rgba(69,123,157,0.18);}
+.section-navy .insight{background:rgba(168,218,220,0.25);border-color:#457B9D;}
+
+/* TEAL sections: 2, 4 */
+.section-teal{background:#1D3557;}
+.section-teal .chart-wrap{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);}
+.section-teal .insight{background:rgba(8,28,32,0.7);border-color:var(--ob-gold);}
+
+/* shared section text styles */
+.section-navy .s-label{color:#457B9D;}.section-teal .s-label{color:var(--ob-gold);}
+.section-navy .s-title{color:#1D3557;}.section-teal .s-title{color:var(--cream);}
+.section-navy .s-intro{color:rgba(29,53,87,0.82);border-color:#457B9D;}.section-teal .s-intro{color:rgba(238,240,245,0.78);border-color:var(--ob-gold);}
+.section-navy .c-title{color:#1D3557;}.section-teal .c-title{color:var(--cream);}
+.section-navy .caption{color:rgba(29,53,87,0.55);}.section-teal .caption{color:rgba(238,240,245,0.45);}
+.section-navy .insight{color:rgba(29,53,87,0.88);}.section-teal .insight{color:rgba(238,240,245,0.84);}
+.section-navy .insight strong{color:#457B9D;}.section-teal .insight strong{color:var(--ob-gold);}
+.section-navy .btn{color:#1D3557;border-color:rgba(69,123,157,0.5);}.section-teal .btn{color:var(--cream);border-color:rgba(255,200,87,0.6);}
+.section-navy .btn.active{background:#457B9D;color:#F1FAEE;border-color:#457B9D;}.section-teal .btn.active{background:var(--ob-gold);color:var(--ob-dark);border-color:var(--ob-gold);}
+.section-navy .btn:hover{background:rgba(69,123,157,0.15);}.section-teal .btn:hover{background:rgba(255,200,87,0.15);}
+
+/* keep legacy class names working */
+.section-dark{background:#1D3557;}
+.section-dark .chart-wrap{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);}
+.section-dark .insight{background:rgba(8,28,32,0.7);border-color:var(--ob-gold);}
+.section-dark .s-label{color:var(--ob-gold);}
+.section-dark .s-title{color:var(--cream);}
+.section-dark .s-intro{color:rgba(238,240,245,0.78);border-color:var(--ob-gold);}
+.section-dark .c-title{color:var(--cream);}
+.section-dark .insight{color:rgba(238,240,245,0.84);}
+.section-dark .insight strong{color:var(--ob-gold);}
+.section-dark .btn{color:var(--cream);border-color:rgba(255,200,87,0.6);}
+.section-dark .btn.active{background:var(--ob-gold);color:var(--ob-dark);border-color:var(--ob-gold);}
+.section-alt{background:#F1FAEE;}
+.section-alt .chart-wrap{background:rgba(255,255,255,0.6);border:1px solid rgba(69,123,157,0.2);box-shadow:0 2px 16px rgba(29,53,87,0.08);}
+.section-alt .insight{background:rgba(168,218,220,0.22);border-color:#457B9D;}
+.section-alt .s-label{color:#457B9D;}
+.section-alt .s-title{color:#1D3557;}
+.section-alt .s-intro{color:rgba(29,53,87,0.82);border-color:#457B9D;}
+.section-alt .c-title{color:#1D3557;}
+.section-alt .caption{color:rgba(29,53,87,0.55);}
+.section-alt .insight{color:rgba(29,53,87,0.88);}
+.section-alt .insight strong{color:#457B9D;}
+.section-alt .btn{color:#1D3557;border-color:rgba(69,123,157,0.5);}
+.section-alt .btn.active{background:#457B9D;color:#F1FAEE;border-color:#457B9D;}
+.section-alt .btn:hover{background:rgba(69,123,157,0.12);}
+
+.col{max-width:var(--max-w);margin:0 auto;}
+
+/* SECTION HEADER */
+.s-label{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--ob-gold);display:block;text-align:center;margin-bottom:10px;}
+.s-title{font-family:'Playfair Display',serif;font-size:clamp(24px,3vw,40px);font-weight:700;line-height:1.15;text-align:center;margin-bottom:14px;white-space:nowrap;color:inherit;}
+.s-intro{font-size:14px;color:rgba(238,240,245,0.78);max-width:560px;margin:0 auto 44px;line-height:1.9;text-align:left;border-left:2px solid var(--ob-gold);padding-left:14px;}
+
+/* CHART CARD */
+.chart-wrap{background:rgba(255,255,255,0.06);border-radius:6px;padding:26px 24px 18px;margin-bottom:24px;box-shadow:0 2px 20px rgba(0,0,0,0.25);border:1px solid rgba(255,255,255,0.1);}
+.c-title{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;margin-bottom:14px;text-align:center;color:var(--cream);}
+.caption{font-size:11px;color:var(--slate);margin-top:9px;font-style:italic;line-height:1.5;}
+.insight{font-size:14px;color:rgba(238,240,245,0.82);background:rgba(31,32,65,0.6);border-left:3px solid var(--ob-gold);padding:10px 14px;margin-top:12px;border-radius:0 3px 3px 0;line-height:1.75;}
+.insight strong{color:var(--ob-gold);font-weight:500;}
+
+/* GRID: side by side */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+.grid-2-65{display:grid;grid-template-columns:1.4fr 1fr;gap:22px;}
+
+/* LANDSCAPE wrapper */
+.wide{max-width:var(--max-w);margin:0 auto 24px;padding:0;}
+.wide .chart-wrap{margin-bottom:0;}
+
+/* BUTTONS */
+.btn-group{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:13px;justify-content:center;}
+.btn{font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;padding:5px 14px;border-radius:18px;border:1.5px solid var(--ob-gold);background:transparent;color:var(--cream);cursor:pointer;transition:all .18s;letter-spacing:.4px;}
+.btn:hover{background:rgba(255,200,87,0.2);}
+.btn.active{background:var(--ob-gold);color:var(--ob-dark);border-color:var(--ob-gold);}
+
+/* PIE GRID */
+.pie-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:12px;}
+.pie-item{text-align:center;}
+.pie-name{font-size:10px;font-weight:500;margin-top:6px;color:var(--text);line-height:1.3;}
+
+/* RACE */
+#race-wrap{position:relative;height:340px;overflow:hidden;}
+.r-row{position:absolute;left:0;right:0;display:flex;align-items:center;gap:6px;transition:top .65s cubic-bezier(.4,0,.2,1);height:30px;}
+.r-flag{width:26px;height:18px;object-fit:cover;border-radius:2px;flex-shrink:0;}
+.r-label{font-size:11px;font-weight:500;width:86px;flex-shrink:0;color:#EEF0F5;text-align:right;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+.r-bg{flex:1;background:rgba(255,255,255,0.15);border-radius:3px;height:20px;overflow:hidden;}
+.r-fill{height:100%;border-radius:3px;transition:width .65s cubic-bezier(.4,0,.2,1);}
+.r-val{font-size:10px;color:rgba(238,240,245,0.7);width:42px;flex-shrink:0;font-family:'DM Mono',monospace;}
+.r-yr{position:absolute;right:12px;bottom:6px;font-family:'Playfair Display',serif;font-size:44px;font-weight:700;color:rgba(255,200,87,.15);pointer-events:none;line-height:1;}
+.race-ctrl{display:flex;gap:7px;justify-content:center;margin-top:10px;}
+
+/* SLOPE */
+#slope-svg{width:100%;overflow:visible;}
+
+/* DIVIDER */
+.divider{width:36px;height:2px;background:linear-gradient(90deg,var(--ob-teal),var(--ob-gold));margin:0 auto;}
+
+/* VEGA */
+.vega-embed{width:100%!important;}
+.vega-embed summary{display:none!important;}
+
+/* INTERACTIVE HINT */
+.click-hint{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:500;
+  background:#457B9D;color:#F1FAEE;padding:5px 14px;border-radius:20px;
+  letter-spacing:.3px;margin-bottom:12px;}
+.click-hint::before{content:'';}
+.section-dark .click-hint{background:#457B9D;color:#F1FAEE;}
+.section-navy .click-hint{background:#457B9D;color:#F1FAEE;}
+.section-teal .click-hint{background:#457B9D;color:#F1FAEE;}
+
+/* FOOTER */
+footer{background:#1D3557;color:rgba(238,240,245,.42);padding:44px var(--pad);font-size:12px;line-height:2;}
+footer strong{color:rgba(238,240,245,.42);}
+footer strong.footer-title{color:var(--ob-gold);}
+
+@media(max-width:800px){
+  .grid-2,.grid-2-65{grid-template-columns:1fr;}
+  .pie-grid{grid-template-columns:repeat(2,1fr);}
+  .hero-stats{gap:26px;}
+  .section{padding:52px 20px;}
+  .wide{padding:0 20px;}
+  .s-title{white-space:normal;}
+}
+</style>
+<script src="world_110m.js"></script>
+</head>
+<body>
+
+<!-- ══ HERO ══ -->
+<header class="hero">
+  <div class="hero-inner">
+    <p class="hero-label">Data Visualisation · Australia · 2025</p>
+    <h1>The World Comes to <em>Study</em></h1>
+    <p class="hero-sub">Australia hosts the world's third-highest share of international students per capita — an industry worth $54 billion and deeply embedded in the national economy, migration system, and cultural identity.</p>
+    <div class="hero-stats">
+      <div><div class="stat-n">845K</div><div class="stat-l">International students 2025</div></div>
+      <div><div class="stat-n">$54B</div><div class="stat-l">Education export revenue 2024–25</div></div>
+      <div><div class="stat-n">#4</div><div class="stat-l">Australia's top export</div></div>
+    </div>
+  </div>
+</header>
+<div class="divider"></div>
+
+<!-- ══ SECTION 1 ══ -->
+<section class="section section-navy">
+  <div class="col">
+    <span class="s-label">Section 01: The Big Picture</span>
+    <h2 class="s-title">From 288,000 to 845,000 in 20 Years</h2>
+    <p class="s-intro">Australia's international student population has nearly tripled since 2005. COVID-19 triggered the sharpest collapse on record, yet by 2024 enrolments hit an all-time high.</p>
+
+    <div class="chart-wrap">
+      <div class="c-title">Total International Student Enrolments in Australia between 2005–2025</div>
+      <div id="chart-area"></div>
+      <div class="insight"><strong>Key insight:</strong> COVID-19 closed Australia's borders in March 2020. Enrolments dropped 24% over two years, then rebounded faster than any prior recovery. The 2024 peak of 850,921 surpassed the pre-pandemic high by over 12%.</div>
+    </div>
+
+    <div class="grid-2">
+      <div class="chart-wrap">
+        <div class="c-title">Education as Australia's 4th-Largest Export in 2024–25</div>
+        <div id="chart-exports"></div>
+        <div class="insight"><strong>Key insight:</strong> Education contributed AUD $53.6B to Australia's economy in 2024–25, ranking as the 4th-largest export. International students pay tuition fees around three times higher than domestic students, making each enrolment a significant economic contribution.</div>
+      </div>
+      <div class="chart-wrap">
+        <div class="c-title">Domestic vs. Overseas Student Enrolments between 2015–2024</div>
+        <div id="chart-trends"></div>
+        <div class="insight"><strong>Key insight:</strong> By 2024, overseas students reached nearly 54% of the domestic total, showing how internationally embedded Australia's higher education has become.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SECTION 2 ══ -->
+<section class="section section-dark">
+  <div class="col">
+    <span class="s-label">Section 02: Where They Come From</span>
+    <h2 class="s-title">A Global Classroom, Led by Asia</h2>
+    <p class="s-intro">Over 150 countries send students to Australia. The vast majority come from Asia, but the balance is shifting fast as India and Nepal surge.</p>
+  </div>
+
+  <!-- Flow map FIRST: landscape -->
+  <div class="wide">
+    <div class="chart-wrap">
+      <div class="c-title">Top 7 Origins of International Students Flowing to Australia, 2025</div>
+      <div id="chart-flowmap"></div>
+      <div class="caption" style="text-align:right;">Built with HTML5 Canvas API</div>
+      <div class="insight"><strong>Key insight:</strong> China, India, and Nepal together account for over 51% of all international enrolments. Southeast and South Asian corridors dominate, with Latin America growing rapidly.</div>
+    </div>
+  </div>
+
+  <div class="col">
+    <!-- Top 10 lollipop + Race side by side -->
+    <div class="grid-2">
+      <div class="chart-wrap">
+        <div class="c-title">Top 10 Source Countries in 2025</div>
+        <div id="chart-lollipop"></div>
+        <div class="caption" style="text-align:right;margin-top:4px;">Built with custom SVG</div>
+        <div class="insight"><strong>Key insight:</strong> China and India together account for over 43% of all enrolments. Nepal has rapidly emerged as a notable third source country.</div>
+      </div>
+      <div class="chart-wrap">
+        <div class="c-title">Ranking Changes for Top 10 Source Countries between 2005–2025</div>
+        <div id="race-wrap">
+          <div class="r-yr" id="race-yr">2005</div>
+        </div>
+        <div class="race-ctrl">
+          <button class="btn active" id="race-btn" onclick="toggleRace()">Play</button>
+          <button class="btn" onclick="resetRace()">Reset</button>
+        </div>
+        <div class="caption" style="text-align:right;margin-top:4px;">Built with custom SVG</div>
+        <div class="insight"><strong>Key insight:</strong> China peaked around 2017. India's rise has been relentless since 2015. Nepal entered the top 3 only after 2018.</div>
+      </div>
+    </div>
+
+    <!-- Visa chart full width -->
+    <div class="chart-wrap">
+      <div class="c-title">Number of Student Visa Applications vs. Grants by Nationality between 2024–25</div>
+      <p style="font-size:11px;color:#1D3557;font-weight:500;text-align:center;margin-bottom:8px;">Ordered by number of applications lodged</p>
+      <div style="background:rgba(29,53,87,0.85);border-radius:4px;padding:8px 14px;margin-bottom:10px;font-size:12px;color:#ffffff;line-height:1.9;">
+        Visa lodgements: applications received by the Department of Home Affairs<br>
+        Visa grants: approved lodgements (may exceed lodgements as processing spans multiple months)
+      </div>
+      <div id="chart-visas"></div>
+      <div class="insight"><strong>Key insight:</strong> India's 74% grant rate is the lowest among major applicant countries. Philippines drops to 79%. Colombia shows a 120% grant rate, meaning more visas were granted than applications lodged that year, because processing times vary: grants finalized this period may include backlogs from prior applications.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SECTION 3 ══ -->
+<section class="section section-navy">
+  <div class="col">
+    <span class="s-label">Section 03: Where They Study</span>
+    <h2 class="s-title">Victoria and NSW host two-thirds</h2>
+    <p class="s-intro">International students are concentrated in Australia's two largest states. The Group of Eight universities attract the most students and are most financially dependent on their fees.</p>
+
+    <!-- Map + Bubble: clicking map filters bubble, click empty space resets -->
+  </div>
+
+  <!-- Map + Bubble side by side -->
+  <div class="wide">
+    <div class="grid-2" style="align-items:stretch;">
+      <div class="chart-wrap" style="display:flex;flex-direction:column;">
+        <div class="c-title">Student Density by State in 2024</div>
+        <div style="font-size:12px;color:rgba(29,53,87,0.6);text-align:center;margin-bottom:4px;">International Students per 1,000 Residents</div>
+        <div style="text-align:center;margin-bottom:8px;"><span class="click-hint">Click a state to filter · Click empty space to reset</span></div>
+        <div id="chart-statemap"></div>
+        <div class="insight" style="margin-top:12px;"><strong>Key insight:</strong> Normalised by population, the ACT has the highest concentration of international students relative to residents, followed closely by Victoria.</div>
+        <div style="flex:1;min-height:20px;"></div>
+      </div>
+      <div class="chart-wrap" style="display:flex;flex-direction:column;">
+        <div class="c-title">Comparison of Total and International Enrolments in Top 8 Universities in Australia by State in 2024</div>
+        <div id="chart-bubble"></div>
+        <div class="insight"><strong>Key insight:</strong> International and total enrolments are strongly proportional. Universities with more total students also enrol more international students. University of Sydney and Monash University lead in absolute international student headcount. International students make up roughly 45–51% of total enrolments at these two universities. ANU and the University of Adelaide have smaller overall cohorts but still maintain around 33–34% international student share.</div>
+        <div style="flex:1;"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="chart-wrap">
+        <div class="c-title" style="font-size:15px;">Top 8 University Revenue Breakdown in 2023</div>
+        <p style="font-size:11px;color:rgba(29,53,87,0.6);text-align:center;margin-bottom:6px;">International students are far more profitable than domestic ones</p>
+        <div class="btn-group">
+          <button class="btn active" id="rev-btn-abs" onclick="setRevView('bar',this)">Total Revenue</button>
+          <button class="btn" id="rev-btn-pct" onclick="setRevView('pct',this)">% Breakdown</button>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:10px;" id="rev-legend-btns">
+          <button class="btn active" id="rev-f-all" onclick="setRevFilter('all',this)">All revenue</button>
+          <button class="btn" id="rev-f-intl" onclick="setRevFilter('intl',this)">International fees only</button>
+          <button class="btn" id="rev-f-dom" onclick="setRevFilter('domestic',this)">Domestic fees only</button>
+        </div>
+        <div id="chart-go8rev"></div>
+        <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;justify-content:center;" id="rev-legend"></div>
+        <div class="insight"><strong>Key insight:</strong> International student fees are the dominant and most profitable revenue stream for Australia's top 8 universities in 2023, dwarfing domestic student funding and often rivaling or exceeding "Other Revenue" streams, creating a heavy reliance on international enrolments for institutional income.</div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ══ SECTION 4 ══ -->
+<section class="section section-teal" style="padding-bottom:68px;">
+  <div class="col">
+    <span class="s-label">Section 04: What They Study</span>
+    <h2 class="s-title">Fields of Study and Graduate Skills</h2>
+    <p class="s-intro">Management and Commerce is the most popular field at every level. Information Technology has seen the fastest growth, up 22% in a single year.</p>
+
+    <div style="display:grid;grid-template-columns:55fr 45fr;gap:22px;align-items:stretch;">
+      <div class="chart-wrap" style="display:flex;flex-direction:column;">
+        <div class="c-title">International Students by Field and Level of Course in 2024</div>
+        <div class="btn-group">
+          <button class="btn active" onclick="switchHeatmap('count',this)">Raw Count</button>
+          <button class="btn" onclick="switchHeatmap('band',this)">Classified Bands</button>
+        </div>
+        <div id="chart-heatmap"></div>
+        <div class="insight" style="margin-top:auto;"><strong>Key insight:</strong> Management dominates at Bachelor and Postgraduate Coursework levels, over 187,000 students across all levels. IT enrolments are heavily postgraduate, reflecting demand for skilled tech workers seeking migration pathways. Health is concentrated at Bachelor level. Creative Arts and Architecture remain niche fields. Sub-Bachelor enrolments are small across all disciplines, suggesting most students enter at Bachelor level or above. The dominance of professional and STEM fields reflects students' strategic focus on careers and visa eligibility.</div>
+      </div>
+      <div class="chart-wrap" style="display:flex;flex-direction:column;">
+        <div class="c-title">Graduate Skills Beyond the Classroom</div>
+        <p style="font-size:11px;color:var(--slate);text-align:center;margin-bottom:12px;">International student survey 2023, Study Australia</p>
+        <div id="chart-skills-target"></div>
+        <div class="caption" style="text-align:right;margin-top:4px;">Built with custom SVG</div>
+        <div class="insight" style="margin-top:auto;"><strong>Key insight:</strong> Over 90% of graduates rate their English, problem-solving and self-management skills as strong. Nearly all credit personal skills and language proficiency as key to securing employment.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SECTION 5 ══ -->
+<section class="section section-navy">
+  <div class="col">
+    <span class="s-label">Section 05: What Happens After</span>
+    <h2 class="s-title">Studying here is a pathway to staying</h2>
+    <p class="s-intro">For many students, a degree is just the beginning. Australia's migration program is closely intertwined with its education sector.</p>
+  </div>
+
+  <!-- Sankey: FULL WIDTH alone -->
+  <div class="wide" style="margin-top:0;">
+    <div class="chart-wrap">
+      <div class="c-title">What Happens a Decade Later: Education Type to Residency Outcome, 2010–11 Cohort</div>
+      <p style="font-size:12px;color:var(--slate);text-align:center;margin-bottom:14px;">Tracking 362,830 international students enrolled in 2010–11 through to 2021–22</p>
+      <div style="text-align:center;margin-bottom:8px;"><span class="click-hint">Hover over a flow band to see details</span></div>
+      <div id="chart-sankey" style="position:relative;"></div>
+      <div id="sankey-tip" style="display:none;position:fixed;background:rgba(29,53,87,0.95);color:#F1FAEE;padding:8px 13px;border-radius:5px;font-size:12px;pointer-events:none;z-index:9999;border:1px solid rgba(255,200,87,0.5);line-height:1.8;"></div>
+      <div class="caption" style="text-align:right;margin-top:4px;">Built with custom SVG</div>
+    </div>
+  </div>
+
+  <!-- Migration bar (left) + combined insight box (right) -->
+  <div class="wide">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:stretch;">
+      <!-- LEFT: Migration Pathways bar -->
+      <div class="chart-wrap" style="display:flex;flex-direction:column;">
+        <div class="c-title">Migration Pathway Counts in 2023–24</div>
+        <p style="font-size:12px;color:var(--slate);text-align:center;margin-bottom:14px;">Permanent visa grants by migration stream</p>
+        <div id="chart-migration-stream" style="flex:1;min-height:220px;"></div>
+      </div>
+      <!-- RIGHT: combined key insights box -->
+      <div class="chart-wrap" style="display:flex;flex-direction:column;justify-content:flex-start;gap:16px;">
+        <div class="c-title" style="text-align:left;">Key Insights</div>
+        <div class="insight" style="margin-top:0;"><strong>Education → Residency:</strong> Over half (55%) of the 2010–11 cohort remained in Australia a decade later. VET students were more likely to gain permanent residence (56%) than Higher Education students (45%), showing study as a viable and highly successful migration route.</div>
+        <div class="insight" style="margin-top:0;"><strong>Migration Pathways:</strong> The Skilled stream accounts for over 60% of permanent visa grants, the primary pathway for former international students seeking to remain in Australia long-term after completing their studies.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slope + Donut: linked interactive -->
+  <div class="wide">
+    <div class="chart-wrap">
+      <div class="c-title">Number of Permanent Visa Grants by Country: 2015–16 vs. 2024–25</div>
+      <div style="text-align:center;margin-bottom:14px;"><span class="click-hint">Click a line to filter · Click the same line again to reset</span></div>
+      <div style="text-align:center;margin-bottom:10px;">
+        <button class="btn active" id="slope-log-btn" onclick="toggleSlopeLog(this)">Linear Scale</button>
+        <button class="btn" id="slope-log-btn2" onclick="toggleSlopeLog2(this)">Log Scale</button>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 300px;gap:24px;align-items:start;">
+        <div>
+          <div id="chart-migration-slope"></div>
+          <div class="caption" style="text-align:right;margin-top:4px;">Built with custom SVG</div>
+        </div>
+        <div style="padding-top:55px;">
+          <div id="mig-donut-title" style="font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:#1D3557;text-align:center;margin-bottom:8px;">All Countries</div>
+          <div id="chart-migration-donut"></div>
+          <div id="mig-donut-stats" style="text-align:center;margin-top:8px;font-size:12px;color:#1D3557;"></div>
+        </div>
+      </div>
+      <div class="insight"><strong>Key insight:</strong> India leads permanent migration (48,326 grants in 2024–25), while China has declined significantly to 20,405. Nepal, Pakistan and Sri Lanka have nearly doubled or tripled their grants, reflecting the growing South Asian student-to-resident pipeline. The UK has halved. Use log scale to compare smaller countries. Click any country line to highlight it and see its share in the donut chart.</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="col">
+    <strong class="footer-title">The World Comes to Study: Australia's International Student Story</strong> &nbsp;|&nbsp; Author: Ziya Liu &nbsp;|&nbsp; Student ID: 35669780 &nbsp;|&nbsp; FIT2179 &nbsp;|&nbsp; Created May 2025 &nbsp;|&nbsp; Sources: Australian Department of Education; Department of Home Affairs (Student Visa and Temporary Graduate Visa Program Report; Temporary Resident Skilled Report Dec 2025); Australian Bureau of Statistics; Study Australia International Student Survey 2023; Jobs and Skills Australia International Students Pathways and Outcomes Study 2025; University annual reports 2023 &nbsp;|&nbsp;
+    <strong>Vega-Lite 5</strong> and <strong>Vega 5</strong> (all standard charts and maps) &nbsp;|&nbsp; <strong>Vega-Embed 6</strong> (chart embedding) &nbsp;|&nbsp; <strong>HTML5 Canvas API</strong> (animated flow map) &nbsp;|&nbsp; <strong>SVG</strong> (Sankey diagram, slope chart, lollipop chart, bar chart race) &nbsp;|&nbsp; FlagCDN (flag images) &nbsp;|&nbsp; Google Fonts (Playfair Display, DM Sans, DM Mono) &nbsp;|&nbsp; Built with custom SVG &nbsp;|&nbsp; Generative AI assistance acknowledged for coding, writing polish and audit support
+  </div>
+</footer>
+
+<script>
+// ══ PALETTE ══
+const G='#FFC857',GL='#FFD980',NV='#1D3557',NM='#1D3557',NL='#457B9D',
+      CR='#EEF0F5',SL='#8A93A8',RU='#C0392B';
+// Light section label colour (dark text for mint cream bg)
+const SL_DARK='rgba(29,53,87,0.65)',CR_DARK='#1D3557',NM_LIGHT='rgba(255,255,255,0.55)';
+// Ocean Breeze 5 colours
+const OB_DARK='#1F2041', OB_PURPLE='#4B3F72',
+      OB_GOLD='#FFC857',  OB_TEAL='#119DA4', OB_TEAL2='#19647E';
+// OB_PURPLE2 kept as alias for backward compat in any residual refs
+const OB_PURPLE2=OB_PURPLE;
+
+// ══ FLAG CODES ══
+const FC={China:'cn',India:'in',Nepal:'np',Vietnam:'vn',Philippines:'ph',
+  Bangladesh:'bd',Colombia:'co',Indonesia:'id',Pakistan:'pk',Brazil:'br',
+  Korea:'kr',Malaysia:'my',Hong_Kong:'hk',Japan:'jp',Thailand:'th',Singapore:'sg'};
+const flagUrl=c=>`https://flagcdn.com/20x15/${(FC[c]||FC[c.replace(' ','_')]||'au')}.png`;
+
+// ══ DATA ══
+const enrolments=[
+  {year:2005,s:288579},{year:2006,s:317083},{year:2007,s:370424},{year:2008,s:434506},
+  {year:2009,s:492043},{year:2010,s:468840},{year:2011,s:425683},{year:2012,s:401786},
+  {year:2013,s:410550},{year:2014,s:452959},{year:2015,s:497218},{year:2016,s:553157},
+  {year:2017,s:623033},{year:2018,s:692657},{year:2019,s:756732},{year:2020,s:687031},
+  {year:2021,s:572263},{year:2022,s:617680},{year:2023,s:783867},{year:2024,s:850921},
+  {year:2025,s:845933}
+];
+const evts=[{year:2009,s:492043,lbl:'GFC'},{year:2020,s:687031,lbl:'COVID-19'},{year:2024,s:850921,lbl:'All-time high'}];
+
+const exports_=[
+  {c:"Iron Ore",v:116379},{c:"Coal",v:71306},{c:"Natural Gas",v:64626},
+  {c:"Education",v:53571},{c:"Gold",v:46906}
+];
+
+const countries=[
+  {country:"China",code:'cn',total:195494},{country:"India",code:'in',total:174888},
+  {country:"Nepal",code:'np',total:70553},{country:"Vietnam",code:'vn',total:36595},
+  {country:"Philippines",code:'ph',total:34812},{country:"Bangladesh",code:'bd',total:26569},
+  {country:"Colombia",code:'co',total:26018},{country:"Indonesia",code:'id',total:25443},
+  {country:"Pakistan",code:'pk',total:22887},{country:"Brazil",code:'br',total:20753}
+];
+
+const raceData={
+  2005:{China:173130,India:36209,Korea:41788,Malaysia:22413,Hong_Kong:23843,Japan:18234,Indonesia:17392,Thailand:16012,Singapore:11984,Vietnam:8320},
+  2007:{China:195810,India:46231,Korea:48923,Malaysia:28109,Hong_Kong:25221,Indonesia:21034,Japan:18834,Vietnam:12043,Thailand:17203,Nepal:8921},
+  2009:{China:168234,India:88921,Korea:39234,Malaysia:30129,Hong_Kong:22341,Vietnam:19340,Indonesia:22109,Nepal:18234,Thailand:16012,Brazil:9234},
+  2011:{China:152039,India:64234,Korea:30234,Malaysia:27901,Vietnam:18234,Nepal:21234,Indonesia:19832,Thailand:14234,Hong_Kong:18234,Brazil:11234},
+  2013:{China:158934,India:55021,Korea:26234,Malaysia:25430,Vietnam:19234,Nepal:24834,Indonesia:18421,Thailand:13421,Colombia:12034,Brazil:12834},
+  2015:{China:153742,India:60415,Nepal:17152,Korea:22341,Malaysia:24120,Vietnam:24593,Indonesia:18231,Thailand:13421,Colombia:10342,Brazil:19543},
+  2017:{China:205123,India:76843,Nepal:31902,Vietnam:26484,Malaysia:24201,Indonesia:22341,Colombia:15821,Thailand:14201,Brazil:27123,Korea:21231},
+  2019:{China:234521,India:127012,Nepal:59234,Vietnam:28734,Philippines:28341,Indonesia:24523,Colombia:22901,Bangladesh:22341,Pakistan:18234,Brazil:30234},
+  2020:{China:210523,India:126234,Nepal:57421,Vietnam:26671,Philippines:27123,Bangladesh:22341,Colombia:20712,Indonesia:21234,Pakistan:17234,Brazil:23634},
+  2021:{China:187523,India:107934,Nepal:49321,Vietnam:22501,Philippines:24512,Bangladesh:19821,Colombia:15921,Indonesia:18201,Pakistan:15021,Brazil:15921},
+  2022:{China:173234,India:109821,Nepal:62634,Vietnam:24834,Philippines:26021,Bangladesh:22134,Colombia:24934,Indonesia:20321,Pakistan:17234,Brazil:21034},
+  2023:{China:184923,India:139423,Nepal:69034,Vietnam:36234,Philippines:32134,Bangladesh:25723,Colombia:44134,Indonesia:24334,Pakistan:20934,Brazil:27734},
+  2024:{China:198234,India:158234,Nepal:71234,Vietnam:38234,Philippines:35123,Bangladesh:27234,Colombia:38234,Indonesia:25734,Pakistan:22234,Brazil:21734},
+  2025:{China:195494,India:174888,Nepal:70553,Vietnam:36595,Philippines:34812,Bangladesh:26569,Colombia:26018,Indonesia:25443,Pakistan:22887,Brazil:20753}
+};
+const raceYears=Object.keys(raceData).map(Number);
+const CC={China:'#E74C3C',India:'#F39C12',Nepal:'#27AE60',Vietnam:'#2980B9',Philippines:'#8E44AD',
+  Bangladesh:'#16A085',Colombia:'#E67E22',Indonesia:'#1ABC9C',Pakistan:'#E91E63',Brazil:'#D35400',
+  Korea:'#2ECC71',Malaysia:'#3498DB',Hong_Kong:'#E91E63',Japan:'#FF5722',Thailand:'#795548',Singapore:'#607D8B'};
+
+const trends=[
+  {year:2015,type:'Domestic',s:1046835},{year:2015,type:'Overseas',s:363298},
+  {year:2016,type:'Domestic',s:1066073},{year:2016,type:'Overseas',s:391136},
+  {year:2017,type:'Domestic',s:1081945},{year:2017,type:'Overseas',s:431438},
+  {year:2018,type:'Domestic',s:1082533},{year:2018,type:'Overseas',s:479987},
+  {year:2019,type:'Domestic',s:1087850},{year:2019,type:'Overseas',s:521948},
+  {year:2020,type:'Domestic',s:1133633},{year:2020,type:'Overseas',s:489234},
+  {year:2021,type:'Domestic',s:1162260},{year:2021,type:'Overseas',s:440309},
+  {year:2022,type:'Domestic',s:1102757},{year:2022,type:'Overseas',s:448642},
+  {year:2023,type:'Domestic',s:1076027},{year:2023,type:'Overseas',s:524514},
+  {year:2024,type:'Domestic',s:1086789},{year:2024,type:'Overseas',s:589288}
+];
+
+const visas=[
+  {country:"China",type:"Applications Lodged",value:94567},{country:"China",type:"Visas Granted",value:88014},
+  {country:"India",type:"Applications Lodged",value:65642},{country:"India",type:"Visas Granted",value:48536},
+  {country:"Nepal",type:"Applications Lodged",value:37848},{country:"Nepal",type:"Visas Granted",value:31869},
+  {country:"Brazil",type:"Applications Lodged",value:15450},{country:"Brazil",type:"Visas Granted",value:14775},
+  {country:"Bangladesh",type:"Applications Lodged",value:14879},{country:"Bangladesh",type:"Visas Granted",value:13821},
+  {country:"Philippines",type:"Applications Lodged",value:12934},{country:"Philippines",type:"Visas Granted",value:10244},
+  {country:"Vietnam",type:"Applications Lodged",value:12866},{country:"Vietnam",type:"Visas Granted",value:12251},
+  {country:"Colombia",type:"Applications Lodged",value:12806},{country:"Colombia",type:"Visas Granted",value:15408},
+  {country:"Indonesia",type:"Applications Lodged",value:12485},{country:"Indonesia",type:"Visas Granted",value:11103},
+  {country:"Sri Lanka",type:"Applications Lodged",value:10368},{country:"Sri Lanka",type:"Visas Granted",value:9942}
+];
+const visaRate=[
+  {country:"China",rate:93},{country:"India",rate:74},{country:"Nepal",rate:84},
+  {country:"Brazil",rate:96},{country:"Bangladesh",rate:93},{country:"Philippines",rate:79},
+  {country:"Vietnam",rate:95},{country:"Colombia",rate:120},{country:"Indonesia",rate:89},
+  {country:"Sri Lanka",rate:96}
+];
+
+const univs=[
+  {university:"Monash University",state:"VIC",total:93227,international:42270},
+  {university:"Univ. of NSW",state:"NSW",total:82283,international:38444},
+  {university:"Univ. of Sydney",state:"NSW",total:78882,international:40111},
+  {university:"Univ. of Melbourne",state:"VIC",total:75572,international:32987},
+  {university:"Univ. of Queensland",state:"QLD",total:57239,international:22270},
+  {university:"Univ. of Adelaide",state:"SA",total:30582,international:10171},
+  {university:"Univ. of WA",state:"WA",total:29569,international:9895},
+  {university:"ANU",state:"ACT",total:22939,international:9402}
+];
+
+const go8=[
+  {university:"Univ. of Sydney",govt:34,intl:47,other:19},
+  {university:"Univ. of Melbourne",govt:42,intl:33,other:25},
+  {university:"Monash University",govt:44,intl:31,other:25},
+  {university:"Univ. of NSW",govt:49,intl:31,other:20},
+  {university:"Univ. of Queensland",govt:53,intl:34,other:13},
+  {university:"Univ. of Adelaide",govt:57,intl:25,other:18},
+  {university:"Univ. of WA",govt:55,intl:15,other:31},
+  {university:"ANU",govt:59,intl:21,other:21}
+];
+
+const fields=[
+  {level:"Postgrad Research",field:"Management",s:2535,band:"Low"},
+  {level:"Postgrad Research",field:"IT",s:2364,band:"Low"},
+  {level:"Postgrad Research",field:"Engineering",s:7493,band:"Medium"},
+  {level:"Postgrad Research",field:"Health",s:3012,band:"Low"},
+  {level:"Postgrad Research",field:"Science",s:6621,band:"Medium"},
+  {level:"Postgrad Research",field:"Society & Culture",s:3060,band:"Low"},
+  {level:"Postgrad Research",field:"Education",s:939,band:"Very Low"},
+  {level:"Postgrad Research",field:"Creative Arts",s:0,band:"Very Low"},
+  {level:"Postgrad Research",field:"Architecture",s:505,band:"Very Low"},
+  {level:"Postgrad Coursework",field:"Management",s:103217,band:"Very High"},
+  {level:"Postgrad Coursework",field:"IT",s:52143,band:"High"},
+  {level:"Postgrad Coursework",field:"Engineering",s:19993,band:"Medium"},
+  {level:"Postgrad Coursework",field:"Health",s:15805,band:"Medium"},
+  {level:"Postgrad Coursework",field:"Science",s:9564,band:"Low"},
+  {level:"Postgrad Coursework",field:"Society & Culture",s:26311,band:"Medium"},
+  {level:"Postgrad Coursework",field:"Education",s:22962,band:"Medium"},
+  {level:"Postgrad Coursework",field:"Creative Arts",s:9073,band:"Low"},
+  {level:"Postgrad Coursework",field:"Architecture",s:6276,band:"Low"},
+  {level:"Bachelor",field:"Management",s:83995,band:"Very High"},
+  {level:"Bachelor",field:"IT",s:46929,band:"High"},
+  {level:"Bachelor",field:"Engineering",s:19383,band:"Medium"},
+  {level:"Bachelor",field:"Health",s:31652,band:"High"},
+  {level:"Bachelor",field:"Science",s:20201,band:"Medium"},
+  {level:"Bachelor",field:"Society & Culture",s:29737,band:"Medium"},
+  {level:"Bachelor",field:"Education",s:7919,band:"Low"},
+  {level:"Bachelor",field:"Creative Arts",s:16639,band:"Medium"},
+  {level:"Bachelor",field:"Architecture",s:4535,band:"Very Low"},
+  {level:"Sub-Bachelor",field:"Management",s:10744,band:"Low"},
+  {level:"Sub-Bachelor",field:"IT",s:5575,band:"Low"},
+  {level:"Sub-Bachelor",field:"Engineering",s:2348,band:"Very Low"},
+  {level:"Sub-Bachelor",field:"Health",s:2385,band:"Very Low"},
+  {level:"Sub-Bachelor",field:"Science",s:617,band:"Very Low"},
+  {level:"Sub-Bachelor",field:"Society & Culture",s:1762,band:"Very Low"},
+  {level:"Sub-Bachelor",field:"Education",s:177,band:"Very Low"},
+  {level:"Sub-Bachelor",field:"Creative Arts",s:2197,band:"Very Low"},
+  {level:"Sub-Bachelor",field:"Architecture",s:260,band:"Very Low"}
+];
+
+const migSlope=[
+  {country:"India",y2015:40145,y2025:48326},{country:"China",y2015:29008,y2025:20405},
+  {country:"Philippines",y2015:11917,y2025:10972},{country:"UK",y2015:18950,y2025:10205},
+  {country:"Pakistan",y2015:6708,y2025:9557},{country:"Sri Lanka",y2015:3590,y2025:9444},
+  {country:"Nepal",y2015:5095,y2025:8319},{country:"Vietnam",y2015:5341,y2025:5665},
+  {country:"South Africa",y2015:4337,y2025:4137},{country:"Afghanistan",y2015:1463,y2025:3474}
+];
+
+const stateNorm=[
+  {state:"Victoria",s:154374,pop:6648000,p:23.2},
+  {state:"New South Wales",s:144924,pop:8166000,p:17.7},
+  {state:"Queensland",s:47597,pop:5322000,p:8.9},
+  {state:"Western Australia",s:44685,pop:2785000,p:16.1},
+  {state:"South Australia",s:29032,pop:1820000,p:15.9},
+  {state:"Australian Capital Territory",s:10509,pop:462000,p:22.7},
+  {state:"Tasmania",s:4000,pop:572000,p:7.0},
+  {state:"Northern Territory",s:2899,pop:251000,p:11.6}
+];
+
+const migStreams=[
+  {stream:"Skilled: Independent",v:42300},{stream:"Skilled: Employer Sponsored",v:31500},
+  {stream:"Skilled: State/Territory Nominated",v:22800},{stream:"Family: Partner",v:18600},
+  {stream:"Family: Child/Other",v:8200},{stream:"Humanitarian",v:9100},{stream:"Special Eligibility",v:2100}
+];
+
+const divData=[
+  {f:"Career opportunities",r:"Very Important",b:-80,e:-28},
+  {f:"Career opportunities",r:"Important",b:-28,e:0},
+  {f:"Career opportunities",r:"Neutral",b:0,e:12},
+  {f:"Career opportunities",r:"Unimportant",b:12,e:17},
+  {f:"Career opportunities",r:"Very Unimportant",b:17,e:20},
+  {f:"Post-study work rights",r:"Very Important",b:-63,e:-15},
+  {f:"Post-study work rights",r:"Important",b:-15,e:0},
+  {f:"Post-study work rights",r:"Neutral",b:0,e:15},
+  {f:"Post-study work rights",r:"Unimportant",b:15,e:21},
+  {f:"Post-study work rights",r:"Very Unimportant",b:21,e:27},
+  {f:"Quality of life",r:"Very Important",b:-57,e:-17},
+  {f:"Quality of life",r:"Important",b:-17,e:0},
+  {f:"Quality of life",r:"Neutral",b:0,e:17},
+  {f:"Quality of life",r:"Unimportant",b:17,e:26},
+  {f:"Quality of life",r:"Very Unimportant",b:26,e:40},
+  {f:"Safety and security",r:"Very Important",b:-55,e:-16},
+  {f:"Safety and security",r:"Important",b:-16,e:0},
+  {f:"Safety and security",r:"Neutral",b:0,e:18},
+  {f:"Safety and security",r:"Unimportant",b:18,e:27},
+  {f:"Safety and security",r:"Very Unimportant",b:27,e:45},
+  {f:"Pathway to PR",r:"Very Important",b:-59,e:-15},
+  {f:"Pathway to PR",r:"Important",b:-15,e:0},
+  {f:"Pathway to PR",r:"Neutral",b:0,e:14},
+  {f:"Pathway to PR",r:"Unimportant",b:14,e:23},
+  {f:"Pathway to PR",r:"Very Unimportant",b:23,e:41},
+  {f:"Family in Australia",r:"Very Important",b:-39,e:-11},
+  {f:"Family in Australia",r:"Important",b:-11,e:0},
+  {f:"Family in Australia",r:"Neutral",b:0,e:20},
+  {f:"Family in Australia",r:"Unimportant",b:20,e:38},
+  {f:"Family in Australia",r:"Very Unimportant",b:38,e:61},
+  {f:"Proximity to home",r:"Very Important",b:-21,e:-9},
+  {f:"Proximity to home",r:"Important",b:-9,e:0},
+  {f:"Proximity to home",r:"Neutral",b:0,e:22},
+  {f:"Proximity to home",r:"Unimportant",b:22,e:52},
+  {f:"Proximity to home",r:"Very Unimportant",b:52,e:79}
+];
+
+// ══ CAMPUS DATA (Dept of Education Table 7.5, 2024 EFTSL) ══
+const campusData=[
+  {university:"The University of Sydney",short:"Sydney",state:"NSW",lat:-33.8882,lon:151.1876,intl_eftsl:31328},
+  {university:"University of New South Wales",short:"UNSW",state:"NSW",lat:-33.9173,lon:151.2313,intl_eftsl:27825},
+  {university:"Monash University",short:"Monash",state:"VIC",lat:-37.9105,lon:145.1363,intl_eftsl:33869},
+  {university:"RMIT University",short:"RMIT",state:"VIC",lat:-37.8079,lon:144.9614,intl_eftsl:27543},
+  {university:"The University of Melbourne",short:"Melbourne",state:"VIC",lat:-37.7963,lon:144.9631,intl_eftsl:27049},
+  {university:"Curtin University",short:"Curtin",state:"WA",lat:-32.0054,lon:115.8942,intl_eftsl:13468},
+  {university:"Swinburne University of Technology",short:"Swinburne",state:"VIC",lat:-37.8223,lon:145.0381,intl_eftsl:12983},
+  {university:"Deakin University",short:"Deakin",state:"VIC",lat:-38.198,lon:144.298,intl_eftsl:11572},
+  {university:"University of Wollongong",short:"Wollongong",state:"NSW",lat:-34.4061,lon:150.8793,intl_eftsl:11948},
+  {university:"Murdoch University",short:"Murdoch",state:"WA",lat:-32.0692,lon:115.8367,intl_eftsl:10759},
+  {university:"Victoria University",short:"Victoria Uni",state:"VIC",lat:-37.8007,lon:144.8997,intl_eftsl:10766},
+  {university:"University of Technology Sydney",short:"UTS",state:"NSW",lat:-33.8836,lon:151.2006,intl_eftsl:9505},
+  {university:"Western Sydney University",short:"Western Sydney",state:"NSW",lat:-33.7469,lon:150.7521,intl_eftsl:8782},
+  {university:"Macquarie University",short:"Macquarie",state:"NSW",lat:-33.7738,lon:151.1126,intl_eftsl:8543},
+  {university:"Torrens University Australia",short:"Torrens",state:"SA",lat:-34.9232,lon:138.6003,intl_eftsl:8347},
+  {university:"The University of Adelaide",short:"Adelaide",state:"SA",lat:-34.9206,lon:138.6037,intl_eftsl:8088},
+  {university:"The University of Western Australia",short:"UWA",state:"WA",lat:-31.98,lon:115.8181,intl_eftsl:7685},
+  {university:"Edith Cowan University",short:"ECU",state:"WA",lat:-31.7491,lon:115.8091,intl_eftsl:7334},
+  {university:"The Australian National University",short:"ANU",state:"ACT",lat:-35.2777,lon:149.1185,intl_eftsl:7086},
+  {university:"The University of Queensland",short:"UQ",state:"QLD",lat:-27.4975,lon:153.0137,intl_eftsl:17789},
+  {university:"Queensland University of Technology",short:"QUT",state:"QLD",lat:-27.4772,lon:153.0281,intl_eftsl:7274},
+  {university:"La Trobe University",short:"La Trobe",state:"VIC",lat:-37.7205,lon:145.0489,intl_eftsl:6901},
+  {university:"Griffith University",short:"Griffith",state:"QLD",lat:-27.9693,lon:153.3672,intl_eftsl:6927},
+  {university:"James Cook University",short:"JCU",state:"QLD",lat:-19.3301,lon:146.7556,intl_eftsl:6579},
+  {university:"University of South Australia",short:"UniSA",state:"SA",lat:-34.9241,lon:138.5993,intl_eftsl:4944},
+  {university:"Flinders University",short:"Flinders",state:"SA",lat:-35.0163,lon:138.5717,intl_eftsl:4619},
+  {university:"Australian Catholic University",short:"ACU",state:"Multi",lat:-37.7997,lon:144.9631,intl_eftsl:4345},
+  {university:"CQUniversity",short:"CQU",state:"QLD",lat:-23.3804,lon:150.5068,intl_eftsl:4000},
+  {university:"University of Tasmania",short:"UTAS",state:"TAS",lat:-42.906,lon:147.3272,intl_eftsl:4000},
+  {university:"The University of Newcastle",short:"Newcastle",state:"NSW",lat:-32.8935,lon:151.709,intl_eftsl:4580},
+  {university:"University of Canberra",short:"UC",state:"ACT",lat:-35.2463,lon:149.088,intl_eftsl:3416},
+  {university:"Southern Cross University",short:"Southern Cross",state:"NSW",lat:-28.8214,lon:153.3565,intl_eftsl:3705},
+  {university:"Federation University Australia",short:"Federation",state:"VIC",lat:-37.5622,lon:143.8503,intl_eftsl:2984},
+  {university:"Charles Darwin University",short:"CDU",state:"NT",lat:-12.3714,lon:130.8674,intl_eftsl:2899},
+  {university:"Charles Sturt University",short:"Charles Sturt",state:"NSW",lat:-33.4195,lon:149.5825,intl_eftsl:2459},
+  {university:"Bond University",short:"Bond",state:"QLD",lat:-28.0738,lon:153.4265,intl_eftsl:1900},
+  {university:"University of Southern Queensland",short:"USQ",state:"QLD",lat:-27.5598,lon:151.9507,intl_eftsl:1628},
+  {university:"University of the Sunshine Coast",short:"UniSC",state:"QLD",lat:-26.6869,lon:153.0669,intl_eftsl:1618},
+  {university:"The University of New England",short:"New England",state:"NSW",lat:-30.4881,lon:151.6456,intl_eftsl:857},
+  {university:"The University of Notre Dame Australia",short:"Notre Dame",state:"WA",lat:-31.9519,lon:115.8567,intl_eftsl:810},
+  {university:"University of Divinity",short:"Divinity",state:"VIC",lat:-37.8136,lon:144.98,intl_eftsl:89},
+  {university:"Avondale University",short:"Avondale",state:"NSW",lat:-33.2381,lon:151.3563,intl_eftsl:49}
+];
+
+// ══ CAMPUS DOT MAP (Canvas) ══
+function drawCampusMap(){
+  const el=document.getElementById('chart-campusmap');
+  if(!el)return;
+  const W=el.offsetWidth||900,H=400;
+  el.innerHTML=`<canvas id="campus-canvas" width="${W}" height="${H}" style="width:100%;border-radius:3px;display:block;cursor:crosshair"></canvas>
+    <div id="campus-tip" style="display:none;position:fixed;background:rgba(26,26,46,0.96);color:#F5F0E8;padding:8px 12px;border-radius:4px;font-size:12px;pointer-events:none;z-index:9999;border:1px solid #C9A84C;"></div>`;
+  const canvas=document.getElementById('campus-canvas');
+  const ctx=canvas.getContext('2d');
+  const tip=document.getElementById('campus-tip');
+
+  const minLon=112,maxLon=156,minLat=-45,maxLat=-10,pad=30;
+  const proj=(lon,lat)=>{
+    const x=pad+(lon-minLon)/(maxLon-minLon)*(W-pad*2);
+    const latR=lat*Math.PI/180;
+    const mercY=Math.log(Math.tan(Math.PI/4+latR/2));
+    const minM=Math.log(Math.tan(Math.PI/4+(minLat*Math.PI/180)/2));
+    const maxM=Math.log(Math.tan(Math.PI/4+(maxLat*Math.PI/180)/2));
+    return[x,pad+(1-(mercY-minM)/(maxM-minM))*(H-pad*2)];
+  };
+
+  const statePolys=[
+    {c:[[113.2,-35],[115.7,-34],[121.5,-33.8],[129,-33.9],[129,-16.5],[126,-14],[114,-22],[113.2,-35]]},
+    {c:[[129,-33.9],[136,-33.9],[136,-29],[138,-22],[136.5,-15.5],[129.5,-14],[129,-16.5],[129,-33.9]]},
+    {c:[[129,-33.9],[141,-29],[141,-38],[136.5,-35.8],[129,-33.9]]},
+    {c:[[138,-22],[141,-29],[153.5,-28.2],[153.3,-25],[148.5,-20.5],[138.5,-16],[138,-22]]},
+    {c:[[141,-29],[141,-34],[150.5,-35.5],[153.5,-28.2],[141,-29]]},
+    {c:[[141,-34],[150,-38.2],[147.5,-38.5],[141,-38],[141,-34]]},
+    {c:[[145,-40.5],[148.5,-41.5],[148.5,-43.5],[145,-43.2],[144.5,-41],[145,-40.5]]},
+    {c:[[148.7,-35.15],[149.42,-35.15],[149.42,-35.92],[148.7,-35.92],[148.7,-35.15]]}
+  ];
+
+  ctx.fillStyle='#E8F5F6';ctx.fillRect(0,0,W,H);
+  statePolys.forEach(st=>{
+    ctx.beginPath();
+    st.c.forEach(([lon,lat],i)=>{const[x,y]=proj(lon,lat);i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);});
+    ctx.closePath();ctx.fillStyle='rgba(69,123,157,0.15)';ctx.fill();
+    ctx.strokeStyle='rgba(29,53,87,0.3)';ctx.lineWidth=0.7;ctx.stroke();
+  });
+
+  const stateCol={NSW:'#457B9D',VIC:OB_GOLD,QLD:'#1D3557',WA:'#A8DADC',SA:'#457B9D',ACT:OB_GOLD,TAS:'#1D3557',NT:'#A8DADC',Multi:SL};
+  const maxE=campusData.reduce((m,d)=>Math.max(m,d.intl_eftsl),0);
+
+  campusData.forEach(d=>{
+    const[x,y]=proj(d.lon,d.lat);
+    const r=2+Math.sqrt(d.intl_eftsl/maxE)*24;
+    const col=stateCol[d.state]||'#888';
+    ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);
+    ctx.fillStyle=col+'BB';ctx.fill();
+    ctx.strokeStyle='rgba(255,255,255,0.7)';ctx.lineWidth=0.8;ctx.stroke();
+  });
+
+  ctx.font='bold 9px DM Sans,sans-serif';ctx.textBaseline='middle';
+  campusData.filter(d=>d.intl_eftsl>15000).forEach(d=>{
+    const[x,y]=proj(d.lon,d.lat);
+    const r=2+Math.sqrt(d.intl_eftsl/maxE)*24;
+    ctx.fillStyle='#1D3557';ctx.textAlign='left';
+    ctx.fillText(d.short,x+r+3,y);
+  });
+
+  const legX=W-90,legY=H-95;
+  ctx.font='9px DM Sans,sans-serif';ctx.fillStyle='#1D3557';ctx.textAlign='left';
+  ctx.fillText('EFTSL',legX,legY-8);
+  [[5000,'5k'],[15000,'15k'],[30000,'30k+']].forEach(([v,lbl],i)=>{
+    const r=2+Math.sqrt(v/maxE)*24;
+    const cx=legX+20,cy=legY+i*26+6;
+    ctx.beginPath();ctx.arc(cx,cy,r,0,Math.PI*2);
+    ctx.fillStyle='rgba(75,63,114,0.4)';ctx.fill();
+    ctx.strokeStyle='rgba(17,157,164,0.5)';ctx.lineWidth=0.5;ctx.stroke();
+    ctx.fillStyle='#1D3557';ctx.textAlign='left';ctx.textBaseline='middle';
+    ctx.fillText(lbl,cx+r+4,cy);
+  });
+
+  // ── Library attribution ──
+  ctx.font='8px DM Mono,monospace'; ctx.textAlign='right'; ctx.textBaseline='bottom';
+  ctx.fillStyle='rgba(29,53,87,0.35)';
+  ctx.fillText('Built with HTML5 Canvas API', W-8, H-6);
+
+  canvas.addEventListener('mousemove',e=>{
+    const rect=canvas.getBoundingClientRect();
+    const mx=(e.clientX-rect.left)*(W/rect.width),my=(e.clientY-rect.top)*(H/rect.height);
+    let found=null,minD=9999;
+    campusData.forEach(d=>{
+      const[x,y]=proj(d.lon,d.lat);
+      const r=2+Math.sqrt(d.intl_eftsl/maxE)*24;
+      const dist=Math.hypot(mx-x,my-y);
+      if(dist<r+5&&dist<minD){minD=dist;found=d;}
+    });
+    if(found){
+      tip.style.display='block';tip.style.left=(e.clientX+12)+'px';tip.style.top=(e.clientY-10)+'px';
+      tip.innerHTML=`<strong>${found.university}</strong><br>${found.state} | ${found.intl_eftsl.toLocaleString()} EFTSL`;
+    } else tip.style.display='none';
+  });
+  canvas.addEventListener('mouseleave',()=>tip.style.display='none');
+}
+
+// ══ CHART 1: AREA with dotted event lines (Vega for animation support) ══
+const areaSpec={
+  $schema:'https://vega.github.io/schema/vega-lite/v5.json',
+  width:'container',height:280,background:'transparent',
+  layer:[
+    {data:{values:enrolments},
+     mark:{type:'area',color:OB_GOLD,opacity:0.12},
+     encoding:{x:{field:'year',type:'quantitative',axis:{format:'d',title:'Year',labelColor:SL_DARK,titleColor:SL_DARK,grid:false}},
+               y:{field:'s',type:'quantitative',axis:{format:'~s',title:'Number of students enrolled',labelColor:SL_DARK,titleColor:SL_DARK,grid:true,gridColor:'rgba(29,53,87,0.08)'}}}},
+    {data:{values:enrolments},
+     mark:{type:'line',color:OB_GOLD,strokeWidth:2.5,point:{filled:true,color:OB_GOLD,size:30}},
+     encoding:{x:{field:'year',type:'quantitative'},y:{field:'s',type:'quantitative'},
+               tooltip:[{field:'year',title:'Year'},{field:'s',title:'Students',format:','}]}},
+    {data:{values:evts},
+     mark:{type:'rule',strokeDash:[4,3],stroke:RU,strokeWidth:1.5,opacity:0.75},
+     encoding:{x:{field:'year',type:'quantitative'},y:{field:'s',type:'quantitative'},y2:{value:280}}},
+    {data:{values:evts},
+     mark:{type:'point',size:80,color:RU,filled:true},
+     encoding:{x:{field:'year',type:'quantitative'},y:{field:'s',type:'quantitative'}}},
+    {data:{values:evts},
+     mark:{type:'text',dy:-13,fontSize:10,fontWeight:600,color:RU,align:'center'},
+     encoding:{x:{field:'year',type:'quantitative'},y:{field:'s',type:'quantitative'},text:{field:'lbl'}}}
+  ]
+};
+vegaEmbed('#chart-area',areaSpec,{actions:false});
+
+// ══ CHART 2: EXPORTS ══
+vegaEmbed('#chart-exports',{
+  $schema:'https://vega.github.io/schema/vega-lite/v5.json',
+  width:'container',height:200,background:'transparent',
+  data:{values:exports_},
+  mark:{type:'bar',cornerRadiusEnd:3},
+  encoding:{
+    y:{field:'c',type:'nominal',sort:'-x',axis:{title:'',labelColor:CR_DARK,labelFontSize:12}},
+    x:{field:'v',type:'quantitative',axis:{format:'~s',title:'AUD (millions)',labelColor:SL_DARK,titleColor:SL_DARK}},
+    color:{field:'c',type:'nominal',
+      scale:{domain:['Iron Ore','Coal','Natural Gas','Education','Gold'],
+             range:['#457B9D','#457B9D','#457B9D',OB_GOLD,'#457B9D']},
+      legend:null},
+    tooltip:[{field:'c',title:'Export'},{field:'v',title:'AUD millions',format:','}]
+  }
+},{actions:false});
+
+// ══ CHART 3: LINE CHART domestic vs overseas with Vega legend ══
+vegaEmbed('#chart-trends',{
+  $schema:'https://vega.github.io/schema/vega-lite/v5.json',
+  width:'container',height:260,background:'transparent',
+  data:{values:trends},
+  layer:[
+    {mark:{type:'line',point:{filled:true,size:50},strokeWidth:2},
+     encoding:{
+       x:{field:'year',type:'quantitative',axis:{format:'d',title:'Year',labelColor:SL_DARK,titleColor:SL_DARK,grid:false}},
+       y:{field:'s',type:'quantitative',axis:{format:'~s',title:'Number of students',labelColor:SL_DARK,titleColor:SL_DARK,grid:true,gridColor:'rgba(29,53,87,0.08)'}},
+       color:{field:'type',type:'nominal',
+         scale:{domain:['Domestic','Overseas'],range:['#457B9D99',OB_GOLD]},
+         legend:{title:null,labelColor:CR_DARK,orient:'bottom-right',offset:10}},
+       tooltip:[{field:'year',title:'Year'},{field:'type',title:'Type'},{field:'s',title:'Students',format:','}]
+     }},
+    {data:{values:[{year:2020,s:800000,lbl:'COVID-19'}]},
+     mark:{type:'rule',strokeDash:[4,3],stroke:RU,strokeWidth:1.2,opacity:0.7},
+     encoding:{x:{field:'year',type:'quantitative'}}},
+    {data:{values:[{year:2020,s:800000,lbl:'COVID-19'}]},
+     mark:{type:'text',fontSize:9,color:RU,fontWeight:600,dx:4,dy:-8,align:'left'},
+     encoding:{x:{field:'year',type:'quantitative'},y:{field:'s',type:'quantitative'},text:{field:'lbl'}}}
+  ]
+},{actions:false});
+
+// ══ CHART 4: FLOW MAP (top 7 only) ══
+const DLAT=-25.7,DLON=133.7;
+const flowData2=[
+  {country:"China",lat:35.86,lon:104.19,total:195494,color:"#E74C3C"},
+  {country:"India",lat:20.59,lon:78.96,total:174888,color:"#F39C12"},
+  {country:"Nepal",lat:28.39,lon:84.12,total:70553,color:"#27AE60"},
+  {country:"Vietnam",lat:14.06,lon:108.28,total:36595,color:"#2980B9"},
+  {country:"Philippines",lat:12.88,lon:121.77,total:34812,color:"#8E44AD"},
+  {country:"Bangladesh",lat:23.68,lon:90.35,total:26569,color:"#16A085"},
+  {country:"Colombia",lat:4.57,lon:-74.30,total:26018,color:"#E67E22"},
+];
+
+function drawFlowMap() {
+  const el = document.getElementById('chart-flowmap');
+  if (!el) return;
+  const W = el.offsetWidth || 960;
+  const H = 460;
+
+  el.innerHTML = `
+    <div style="display:flex;gap:0;align-items:flex-start;">
+      <div id="flow-country-btns" style="display:flex;flex-direction:column;gap:5px;padding:12px 10px 12px 0;min-width:110px;flex-shrink:0;">
+        <div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:${OB_GOLD};margin-bottom:4px;font-family:'DM Mono',monospace;">Filter origin</div>
+        <button onclick="flowFilter('all')" id="fbtn-all" style="text-align:left;background:${OB_GOLD};color:${OB_DARK};border:none;padding:4px 10px;border-radius:12px;font-size:10px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">All</button>
+        ${flowData2.map(d=>`<button onclick="flowFilter('${d.country}')" id="fbtn-${d.country.replace(/\s/g,'_')}" style="text-align:left;background:transparent;color:${d.color};border:1.5px solid ${d.color};padding:4px 10px;border-radius:12px;font-size:10px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;" onmouseover="this.style.background='${d.color}33'" onmouseout="this.style.background='transparent'">${d.country}</button>`).join('')}
+      </div>
+      <div style="flex:1;min-width:0;">
+        <canvas id="flow-canvas" width="${W-120}" height="${H}" style="width:100%;border-radius:8px;display:block;cursor:crosshair"></canvas>
+      </div>
+    </div>
+    <div id="flow-tooltip" style="display:none;position:fixed;background:rgba(8,15,28,0.97);color:#EEF0F5;padding:10px 14px;border-radius:6px;font-size:12px;pointer-events:none;z-index:9999;border:1px solid rgba(255,200,87,0.6);line-height:1.8;box-shadow:0 4px 20px rgba(0,0,0,0.5);"></div>`;
+
+  let activeFlowCountry = 'all';
+  window.flowFilter = function(country) {
+    activeFlowCountry = country;
+    // update button styles
+    document.getElementById('fbtn-all').style.background = country==='all'?OB_GOLD:'transparent';
+    document.getElementById('fbtn-all').style.color = country==='all'?OB_DARK:'rgba(238,240,245,0.7)';
+    document.getElementById('fbtn-all').style.border = country==='all'?'none':'1.5px solid rgba(238,240,245,0.3)';
+    flowData2.forEach(d=>{
+      const btn=document.getElementById('fbtn-'+d.country.replace(/\s/g,'_'));
+      if(btn){
+        btn.style.background = country===d.country?d.color:'transparent';
+        btn.style.color = country===d.country?OB_DARK:d.color;
+      }
+    });
+    buildBackground();
+  };
+
+  const canvas = document.getElementById('flow-canvas');
+  const ctx    = canvas.getContext('2d');
+  const tip    = document.getElementById('flow-tooltip');
+
+  // ── Equirectangular projection centred on Asia-Pacific ──
+  // Viewport: lon 50→200 (wrapping Pacific), lat -52→70
+  const LON0=50, LON1=200, LAT0=-52, LAT1=70;
+  const proj = (lon, lat) => {
+    // Wrap negative longitudes into 0–360 space so the Pacific stays continuous
+    let l = lon;
+    if (l < LON0) l += 360;
+    return [
+      (l - LON0) / (LON1 - LON0) * W,
+      H - (lat - LAT0) / (LAT1 - LAT0) * H
+    ];
+  };
+
+  const DEST = proj(133.7, -25.7);
+  const maxTotal = 195494;
+
+  const flows = flowData2.map(d => {
+    // Wrap source longitudes the same way
+    let slon = d.lon;
+    if (slon < LON0) slon += 360;
+    const [x1,y1] = proj(d.lon, d.lat);
+    const [x2,y2] = DEST;
+    const mx=(x1+x2)/2, my=(y1+y2)/2;
+    const dx=x2-x1, dy=y2-y1;
+    const len=Math.sqrt(dx*dx+dy*dy)||1;
+    const cx=mx-dy/len*len*0.22, cy=my+dx/len*len*0.22;
+    const pc=Math.max(4,Math.round((d.total/maxTotal)*22));
+    const particles=[];
+    for(let i=0;i<pc;i++) particles.push({
+      t:Math.random(),
+      speed:0.003+(d.total/maxTotal)*0.006+Math.random()*0.002,
+      size:1.4+(d.total/maxTotal)*2.8
+    });
+    return {...d,x1,y1,x2,y2,cx,cy,particles};
+  });
+
+  const bezier=(x1,y1,cx,cy,x2,y2,t)=>{
+    const mt=1-t;
+    return[mt*mt*x1+2*mt*t*cx+t*t*x2, mt*mt*y1+2*mt*t*cy+t*t*y2];
+  };
+
+  // ── Offscreen background canvas ──
+  const bg=document.createElement('canvas');
+  bg.width=W; bg.height=H;
+  const bx=bg.getContext('2d');
+
+  function buildBackground() {
+    // Deep ocean gradient matching section-teal background
+    const ocean=bx.createLinearGradient(0,0,0,H);
+    ocean.addColorStop(0,'#0B3038'); ocean.addColorStop(1,'#0E3D45');
+    bx.fillStyle=ocean; bx.fillRect(0,0,W,H);
+
+    // ── Country fills from WORLD_GEOJSON with correct projection ──
+    function drawRing(coords, ctx2) {
+      let started = false;
+      let prevX = null;
+      coords.forEach(([lon, lat]) => {
+        // Wrap lon into viewport space
+        let l = lon;
+        if (l < LON0 - 10) l += 360;
+        if (l < LON0 - 20 || l > LON1 + 10) return; // skip off-screen
+        const [x, y] = proj(l, lat);
+        if (y < -20 || y > H + 20) return;
+        // Break line if there's a huge horizontal jump (antimeridian artifact)
+        if (prevX !== null && Math.abs(x - prevX) > W * 0.4) {
+          ctx2.moveTo(x, y);
+        } else if (!started) {
+          ctx2.moveTo(x, y);
+        } else {
+          ctx2.lineTo(x, y);
+        }
+        started = true;
+        prevX = x;
+      });
+    }
+
+    function drawFeature(geom, fill, stroke, lw) {
+      bx.fillStyle=fill; bx.strokeStyle=stroke; bx.lineWidth=lw;
+      if(geom.type==='Polygon'){
+        bx.beginPath(); geom.coordinates.forEach(r=>drawRing(r,bx)); bx.closePath(); bx.fill(); bx.stroke();
+      } else if(geom.type==='MultiPolygon'){
+        geom.coordinates.forEach(poly=>{
+          bx.beginPath(); poly.forEach(r=>drawRing(r,bx)); bx.closePath(); bx.fill(); bx.stroke();
+        });
+      }
+    }
+
+    if(typeof WORLD_GEOJSON !== 'undefined') {
+      WORLD_GEOJSON.features.forEach(f=>{
+        const isAus = f.properties.NAME==='Australia';
+        drawFeature(f.geometry,
+          isAus?'rgba(255,200,87,0.15)':'rgba(17,157,164,0.12)',
+          isAus?'rgba(255,200,87,0.5)':'rgba(17,157,164,0.2)',
+          isAus?1.2:0.4
+        );
+      });
+    }
+
+    // ── Graticule lines ──
+    bx.strokeStyle='rgba(255,255,255,0.06)';
+    bx.lineWidth=0.5;
+    // Longitude lines every 30°
+    for(let lon=LON0; lon<=LON1; lon+=30){
+      bx.beginPath();
+      for(let lat=LAT0; lat<=LAT1; lat+=2){
+        const[x,y]=proj(lon,lat);
+        lat===LAT0?bx.moveTo(x,y):bx.lineTo(x,y);
+      }
+      bx.stroke();
+    }
+    // Latitude lines every 30°
+    for(let lat=-60; lat<=90; lat+=30){
+      if(lat<LAT0||lat>LAT1) continue;
+      bx.beginPath();
+      for(let lon=LON0; lon<=LON1; lon+=2){
+        const[x,y]=proj(lon,lat);
+        lon===LON0?bx.moveTo(x,y):bx.lineTo(x,y);
+      }
+      bx.stroke();
+    }
+
+    // ── Flow trail arcs ──
+    flows.forEach(f=>{
+      const isActive = activeFlowCountry==='all' || activeFlowCountry===f.country;
+      const t=f.total/maxTotal;
+      const grad=bx.createLinearGradient(f.x1,f.y1,f.x2,f.y2);
+      grad.addColorStop(0,f.color+(isActive?'60':'18')); grad.addColorStop(1,f.color+(isActive?'10':'04'));
+      bx.beginPath(); bx.moveTo(f.x1,f.y1);
+      bx.quadraticCurveTo(f.cx,f.cy,f.x2,f.y2);
+      bx.strokeStyle=grad; bx.lineWidth=(0.6+t*2.2)*(isActive?1:0.3); bx.stroke();
+    });
+
+    // ── Origin dots with glow ──
+    flows.forEach(f=>{
+      const isActive = activeFlowCountry==='all' || activeFlowCountry===f.country;
+      const r=3+(f.total/maxTotal)*9;
+      if(isActive){
+        const g2=bx.createRadialGradient(f.x1,f.y1,0,f.x1,f.y1,r*3);
+        g2.addColorStop(0,f.color+'55'); g2.addColorStop(1,f.color+'00');
+        bx.beginPath(); bx.arc(f.x1,f.y1,r*3,0,Math.PI*2); bx.fillStyle=g2; bx.fill();
+      }
+      bx.beginPath(); bx.arc(f.x1,f.y1,r,0,Math.PI*2); bx.fillStyle=f.color+(isActive?'FF':'44'); bx.fill();
+      if(isActive){
+        bx.beginPath(); bx.arc(f.x1-r*0.3,f.y1-r*0.3,r*0.38,0,Math.PI*2);
+        bx.fillStyle='rgba(255,255,255,0.5)'; bx.fill();
+      }
+    });
+
+    // ── Australia destination target rings ──
+    [28,20,13,7].forEach((r,i)=>{
+      bx.beginPath(); bx.arc(DEST[0],DEST[1],r,0,Math.PI*2);
+      bx.strokeStyle=`rgba(255,200,87,${0.08+i*0.12})`; bx.lineWidth=1.5; bx.stroke();
+    });
+    const dg=bx.createRadialGradient(DEST[0],DEST[1],0,DEST[0],DEST[1],10);
+    dg.addColorStop(0,'#ffffff'); dg.addColorStop(1,'rgba(255,200,87,0)');
+    bx.beginPath(); bx.arc(DEST[0],DEST[1],10,0,Math.PI*2); bx.fillStyle=dg; bx.fill();
+
+    // ── Country labels (top 5) ──
+    bx.font='bold 10.5px DM Sans,sans-serif'; bx.textBaseline='middle';
+    flows.slice(0,5).forEach(f=>{
+      const isActive2 = activeFlowCountry==='all' || activeFlowCountry===f.country;
+      if(!isActive2) return;
+      const isRight=f.x1>DEST[0];
+      bx.textAlign=isRight?'left':'right';
+      const lx=f.x1+(isRight?15:-15);
+      bx.fillStyle='rgba(0,0,0,0.6)'; bx.fillText(f.country,lx+1,f.y1-13+1);
+      bx.fillStyle=f.color;            bx.fillText(f.country,lx,f.y1-13);
+    });
+
+    // ── Legend ──
+    const legX=14, legY=H-flows.length*20-8;
+    bx.font='bold 12px DM Sans,sans-serif'; bx.textAlign='left'; bx.textBaseline='middle';
+    flows.forEach((f,i)=>{
+      const isActive3 = activeFlowCountry==='all' || activeFlowCountry===f.country;
+      const ly=legY+i*20;
+      bx.beginPath(); bx.arc(legX+6,ly,5,0,Math.PI*2);
+      bx.fillStyle=f.color+(isActive3?'FF':'55'); bx.fill();
+      bx.fillStyle=`rgba(238,240,245,${isActive3?0.95:0.35})`;
+      bx.fillText(f.country+' '+(f.total/1000).toFixed(0)+'k', legX+16, ly);
+    });
+
+    // ── Library attribution ──
+    bx.font='8px DM Mono,monospace'; bx.textAlign='right'; bx.textBaseline='bottom';
+    bx.fillStyle='rgba(238,240,245,0.28)';
+    bx.fillText('Built with HTML5 Canvas API', W-8, H-6);
+  }
+
+  buildBackground();
+
+  // ── Animation loop: particles + destination pulse ──
+  let pulseR=16, pulseDir=1;
+  function animate(){
+    requestAnimationFrame(animate);
+    ctx.clearRect(0,0,W,H);
+    ctx.drawImage(bg,0,0);
+
+    pulseR+=0.1*pulseDir;
+    if(pulseR>28||pulseR<12) pulseDir*=-1;
+    ctx.beginPath(); ctx.arc(DEST[0],DEST[1],pulseR,0,Math.PI*2);
+    ctx.strokeStyle=`rgba(255,200,87,${0.05+(28-pulseR)/16*0.07})`;
+    ctx.lineWidth=2; ctx.stroke();
+
+    flows.forEach(f=>{
+      const isActive = activeFlowCountry==='all' || activeFlowCountry===f.country;
+      if(!isActive) return;
+      f.particles.forEach(p=>{
+        p.t=(p.t+p.speed)%1;
+        const[x,y]=bezier(f.x1,f.y1,f.cx,f.cy,f.x2,f.y2,p.t);
+        const alpha=p.t<0.06?p.t/0.06:p.t>0.9?(1-p.t)/0.1:1;
+        const hex=Math.round(alpha*230).toString(16).padStart(2,'0');
+        ctx.beginPath(); ctx.arc(x,y,p.size*2.6,0,Math.PI*2);
+        ctx.fillStyle=f.color+'14'; ctx.fill();
+        ctx.beginPath(); ctx.arc(x,y,p.size,0,Math.PI*2);
+        ctx.fillStyle=f.color+hex; ctx.fill();
+        ctx.beginPath(); ctx.arc(x-p.size*0.3,y-p.size*0.3,p.size*0.38,0,Math.PI*2);
+        ctx.fillStyle=`rgba(255,255,255,${alpha*0.5})`; ctx.fill();
+      });
+    });
+  }
+  animate();
+
+  canvas.addEventListener('mousemove',e=>{
+    const rect=canvas.getBoundingClientRect();
+    const mx=(e.clientX-rect.left)*(W/rect.width);
+    const my=(e.clientY-rect.top)*(H/rect.height);
+    let found=null;
+    flows.forEach(f=>{
+      if(Math.hypot(mx-f.x1,my-f.y1)<(3+(f.total/maxTotal)*9)+12) found=f;
+    });
+    if(found){
+      tip.style.display='block';
+      tip.style.left=(e.clientX+16)+'px';
+      tip.style.top =(e.clientY-12)+'px';
+      tip.innerHTML=`<strong style="color:${found.color};font-size:13px">${found.country}</strong><br>
+        <span style="color:rgba(245,240,232,0.7)">${found.total.toLocaleString()} students enrolled</span>`;
+    } else tip.style.display='none';
+  });
+  canvas.addEventListener('mouseleave',()=>tip.style.display='none');
+}
+
+
+
+// ══ LOLLIPOP WITH FLAG IMAGES ══
+function drawLollipop(){
+  const el=document.getElementById('chart-lollipop');
+  if(!el)return;
+  const W=el.offsetWidth||340;
+  const sorted=[...countries].sort((a,b)=>b.total-a.total);
+  const rowH=30, H=sorted.length*rowH+24, PL=115, PR=46, PT=8;
+  const IW=W-PL-PR;
+  const maxV=sorted[0].total;
+  const xS=v=>(v/maxV)*IW;
+
+  let html=`<svg width="${W}" height="${H}" style="font-family:'DM Sans',sans-serif;overflow:hidden">
+    <g transform="translate(${PL},${PT})">`;
+  sorted.forEach((d,i)=>{
+    const y=i*rowH+rowH/2;
+    const bw=xS(d.total);
+    const code=d.code;
+    const col=CC[d.country]||G;
+    html+=`
+      <image href="https://flagcdn.com/20x15/${code}.png" x="-108" y="${y-8}" width="20" height="15" preserveAspectRatio="xMidYMid meet"/>
+      <text x="-84" y="${y+5}" text-anchor="start" font-size="11" fill="#EEF0F5">${d.country}</text>
+      <line x1="0" y1="${y}" x2="${bw}" y2="${y}" stroke="rgba(255,200,87,0.35)" stroke-width="1.5"/>
+      <circle cx="${bw}" cy="${y}" r="6" fill="${col}"/>
+      <text x="${bw+10}" y="${y+4}" font-size="10" fill="${SL}" font-family="'DM Mono',monospace">${(d.total/1000).toFixed(0)}k</text>`;
+  });
+  for(let t=0;t<=4;t++){
+    const v=Math.round(maxV/4*t), x=xS(v);
+    html+=`<line x1="${x}" y1="0" x2="${x}" y2="${sorted.length*rowH}" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+           <text x="${x}" y="${sorted.length*rowH+14}" text-anchor="middle" font-size="9" fill="${SL}">${Math.round(v/1000)}k</text>`;
+  }
+  html+=`<text x="${IW/2}" y="${sorted.length*rowH+26}" text-anchor="middle" font-size="9" fill="${SL}">Number of international students (2025)</text>`;
+html+=`</g></svg>`;
+  el.innerHTML=html;
+}
+
+// ══ VISA BAR + GRANT RATE LINE ══
+const visaSort=['China','India','Nepal','Brazil','Bangladesh','Philippines','Vietnam','Colombia','Indonesia','Sri Lanka'];
+vegaEmbed('#chart-visas',{
+  $schema:'https://vega.github.io/schema/vega-lite/v5.json',
+  width:'container',height:280,background:NM,
+  resolve:{scale:{y:'independent'}},
+  layer:[
+    {data:{values:visas},
+     mark:{type:'bar',cornerRadiusEnd:2},
+     encoding:{
+       x:{field:'country',type:'nominal',sort:visaSort,
+          axis:{title:'Country',labelColor:CR,labelAngle:-20,labelFontSize:11,titleColor:SL}},
+       y:{field:'value',type:'quantitative',
+          axis:{format:'~s',title:'Number of visa applications / grants',labelColor:SL,titleColor:SL,grid:true,gridColor:'rgba(255,255,255,0.07)'}},
+       xOffset:{field:'type',type:'nominal'},
+       color:{field:'type',type:'nominal',
+         scale:{domain:['Applications Lodged','Visas Granted'],range:['#457B9D',OB_GOLD]},
+         legend:{title:null,labelColor:CR,orient:'top'}},
+       tooltip:[{field:'country',title:'Country'},{field:'type',title:'Status'},{field:'value',title:'Count',format:','}]
+     }},
+    {data:{values:visaRate},
+     mark:{type:'line',color:'#E74C3C',strokeWidth:2,point:{filled:true,color:'#E74C3C',size:50}},
+     encoding:{
+       x:{field:'country',type:'nominal',sort:visaSort},
+       y:{field:'rate',type:'quantitative',scale:{domain:[60,125]},
+          axis:{title:'Grant rate (%)',labelColor:'#E74C3C',titleColor:'#E74C3C',orient:'right',titleAngle:270,titlePadding:30,labelPadding:8}},
+       tooltip:[{field:'country',title:'Country'},{field:'rate',title:'Grant rate (%)'}]
+     }}
+  ]
+},{actions:false});
+
+// ══ BAR CHART RACE ══
+let rIdx=0,rTimer=null,rRunning=false;
+function rFrame(yr){
+  const d=raceData[yr];
+  return Object.entries(d)
+    .map(([k,v])=>({n:k.replace(/_/g,' '),v,code:FC[k]||'au',color:CC[k]||'#888'}))
+    .sort((a,b)=>b.v-a.v).slice(0,10);
+}
+function renderRace(yr){
+  const frame=rFrame(yr);
+  const maxV=frame[0].v;
+  document.getElementById('race-yr').textContent=yr;
+  const existing={};
+  document.querySelectorAll('.r-row').forEach(r=>existing[r.dataset.n]=r);
+  frame.forEach((d,rank)=>{
+    const top=rank*32+2;
+    let row=existing[d.n];
+    if(!row){
+      row=document.createElement('div');row.className='r-row';row.dataset.n=d.n;
+      row.innerHTML=`<img class="r-flag" src="https://flagcdn.com/20x15/${d.code}.png" alt="${d.n}">
+        <div class="r-label">${d.n}</div>
+        <div class="r-bg"><div class="r-fill" style="background:${d.color}"></div></div>
+        <div class="r-val"></div>`;
+      document.getElementById('race-wrap').appendChild(row);
+    }
+    row.style.top=top+'px';
+    row.querySelector('.r-fill').style.width=((d.v/maxV)*100)+'%';
+    row.querySelector('.r-val').textContent=Math.round(d.v/1000)+'k';
+    delete existing[d.n];
+  });
+  Object.values(existing).forEach(r=>r.remove());
+}
+function toggleRace(){
+  const btn=document.getElementById('race-btn');
+  if(rRunning){clearInterval(rTimer);rRunning=false;btn.textContent='Play';}
+  else{
+    rRunning=true;btn.textContent='Pause';
+    rTimer=setInterval(()=>{
+      rIdx=(rIdx+1)%raceYears.length;
+      renderRace(raceYears[rIdx]);
+      if(rIdx===raceYears.length-1){clearInterval(rTimer);rRunning=false;btn.textContent='Play';}
+    },900);
+  }
+}
+function resetRace(){clearInterval(rTimer);rRunning=false;rIdx=0;document.getElementById('race-btn').textContent='Play';renderRace(raceYears[0]);}
+renderRace(raceYears[0]);
+
+// ══ STATE MAP + BUBBLE (linked filter) ══
+let currentStateFilter = 'all';
+function renderStateMap(filter) {
+  const el = document.getElementById('chart-statemap');
+  if (!el) return;
+
+  const stateData = [
+    {state:'Western Australia', ab:'WA', value:16.1, students:44685, lon:121.5, lat:-25.5},
+    {state:'Northern Territory', ab:'NT', value:11.6, students:2899, lon:133.5, lat:-19.5},
+    {state:'South Australia', ab:'SA', value:15.9, students:29032, lon:135.5, lat:-30.5},
+    {state:'Queensland', ab:'QLD', value:8.9, students:47597, lon:145.0, lat:-21.5},
+    {state:'New South Wales', ab:'NSW', value:17.7, students:144924, lon:147.0, lat:-32.5},
+    {state:'Victoria', ab:'VIC', value:23.2, students:154374, lon:144.2, lat:-37.2},
+    {state:'Tasmania', ab:'TAS', value:7.0, students:4000, lon:146.5, lat:-42.0},
+    {state:'Australian Capital Territory', ab:'ACT', value:22.7, students:10509, lon:149.1, lat:-35.35}
+  ];
+
+  // Real state boundary data. Do NOT use world_110m.js here because it only has
+  // Australia as one country polygon, not VIC/NSW/QLD/WA/TAS state borders.
+  const ausStatesUrl = 'https://raw.githubusercontent.com/rowanhogan/australian-states/master/states.geojson';
+
+  const spec = {
+    $schema:'https://vega.github.io/schema/vega-lite/v5.json',
+    width:'container',
+    height:390,
+    background:'transparent',
+    autosize:{type:'fit', contains:'padding'},
+    projection:{type:'mercator', center:[134,-27], scale:430},
+    layer:[
+      {
+        data:{url:ausStatesUrl, format:{type:'json', property:'features'}},
+        transform:[
+          {calculate:"datum.properties ? (datum.properties.STATE_NAME || datum.properties.STATE || datum.properties.STE_NAME || datum.properties.name || datum.properties.Name) : ''", as:'stateName'},
+          {lookup:'stateName', from:{data:{values:stateData}, key:'state', fields:['ab','value','students']}},
+          {calculate: filter==='all' ? 'true' : `datum.ab === '${filter}'`, as:'isSelected'}
+        ],
+        mark:{type:'geoshape', stroke:'#457B9D', strokeWidth:1.4, name:'stateshape', cursor:'pointer'},
+        encoding:{
+          color:{
+            condition:{test:'datum.isSelected', field:'value', type:'quantitative',
+              scale:{domain:[0,23.2], range:['rgba(255,200,87,0.15)','rgba(255,200,87,0.40)','rgba(255,200,87,0.65)','rgba(255,200,87,0.85)',OB_GOLD]},
+              legend:{title:'Intl students per 1,000 residents', orient:'bottom', gradientLength:260, labelColor:CR_DARK, titleColor:CR_DARK, labelFontSize:10}},
+            value:'white'
+          },
+          tooltip:[
+            {field:'stateName', title:'State'},
+            {field:'value', title:'Students per 1,000 residents', format:'.1f'},
+            {field:'students', title:'International students', format:','}
+          ]
+        }
+      },
+      {
+        data:{values:stateData.filter(d => d.ab !== 'ACT')},
+        transform:[{calculate: filter==='all' ? 'true' : `datum.ab === '${filter}'`, as:'isSel'}],
+        mark:{type:'text', font:'DM Sans', fontWeight:'bold', fontSize:13, dy:-4},
+        encoding:{
+          longitude:{field:'lon', type:'quantitative'},
+          latitude:{field:'lat', type:'quantitative'},
+          text:{field:'ab'},
+          color:{condition:{test:'datum.isSel', value:'#1D3557'}, value:'#8A93A8'}
+        }
+      },
+      {
+        data:{values:stateData.filter(d => d.ab !== 'ACT')},
+        transform:[{calculate: filter==='all' ? 'true' : `datum.ab === '${filter}'`, as:'isSel'}],
+        mark:{type:'text', font:'DM Mono', fontSize:11, dy:12},
+        encoding:{
+          longitude:{field:'lon', type:'quantitative'},
+          latitude:{field:'lat', type:'quantitative'},
+          text:{field:'value', format:'.1f'},
+          color:{condition:{test:'datum.isSel', value:OB_GOLD}, value:'#A8DADC'}
+        }
+      }
+    ],
+    config:{view:{stroke:null}}
+  };
+
+  vegaEmbed('#chart-statemap', spec, {actions:false}).then(result=>{
+    result.view.addEventListener('click', (event, item) => {
+      if(item && item.datum && item.datum.ab){
+        const st = item.datum.ab;
+        if(currentStateFilter === st){
+          currentStateFilter = 'all';
+        } else {
+          currentStateFilter = st;
+        }
+        renderStateMap(currentStateFilter);
+        renderBubble(currentStateFilter);
+      } else {
+        currentStateFilter = 'all';
+        renderStateMap('all');
+        renderBubble('all');
+      }
+    });
+  });
+}
+
+
+
+function renderBubble(filter){
+  const data=univs.map(d=>({...d,hi:filter==='all'||d.state===filter}));
+  vegaEmbed('#chart-bubble',{
+    $schema:'https://vega.github.io/schema/vega-lite/v5.json',
+    width:'container',height:260,background:'transparent',
+    data:{values:data},
+    mark:{type:'point',filled:true},
+    encoding:{
+      x:{field:'total',type:'quantitative',axis:{format:'~s',title:'Total Enrolments',labelColor:SL_DARK,titleColor:SL_DARK}},
+      y:{field:'international',type:'quantitative',axis:{format:'~s',title:'International Enrolments',labelColor:SL_DARK,titleColor:SL_DARK}},
+      size:{field:'international',type:'quantitative',scale:{range:[60,900]},
+        legend:{title:'International students',labelColor:CR_DARK,titleColor:CR_DARK,symbolFillColor:G}},
+      color:{field:'state',type:'nominal',
+        scale:{domain:['VIC','NSW','QLD','SA','WA','ACT'],range:['#FFC857','#457B9D','#A8DADC','#1D3557','#FFD980','#6B9FBF']},
+        legend:{title:'State',labelColor:CR_DARK,titleColor:CR_DARK}},
+      opacity:{condition:{test:'datum.hi===true',value:0.92},value:0.1},
+      tooltip:[{field:'university',title:'University'},{field:'state',title:'State'},{field:'total',title:'Total students',format:','},{field:'international',title:'International',format:','}]
+    }
+  },{actions:false});
+}
+renderStateMap('all');renderBubble('all');
+
+
+// ══ GO8 REVENUE DATA (from university annual reports 2023) ══
+const go8rev = [
+  {uni:"Univ. of Queensland",      intl:710378000,  hecs:24427000,  help:221467000, domFee:23218000,  other:631921000},
+  {uni:"Monash University",  intl:1096951000, hecs:27756000,  help:381082000, domFee:61797000,  other:616876000},
+  {uni:"Australian Natl Univ.",     intl:244633000,  hecs:10283000,  help:97173000,  domFee:12636000,  other:635791000},
+  {uni:"Univ. of Sydney",  intl:1402000000, hecs:36427000,  help:274202000, domFee:74471000,  other:1453900000},
+  {uni:"Univ. of W. Australia",     intl:174828000,  hecs:15900000,  help:138660000, domFee:16498000,  other:608678000},
+  {uni:"Univ. of Adelaide",intl:241983000,  hecs:9047000,   help:144847000, domFee:20849000,  other:591218000},
+  {uni:"Univ. of NSW",    intl:752624000,  hecs:29866000,  help:243246000, domFee:64540000,  other:492713000},
+  {uni:"Univ. of Melbourne",intl:993420000, hecs:36476000,  help:295490000, domFee:120834000, other:869465000}
+];
+// Compute total and pct per uni
+go8rev.forEach(d=>{
+  d.total = d.intl + d.hecs + d.help + d.domFee + Math.max(0,d.other);
+  d.intlPct = Math.round(d.intl/d.total*100);
+});
+let go8RevView = 'bar'; // 'bar' or 'pct'
+let go8RevFilter = 'all'; // 'all','intl','domestic'
+
+
+// ══ GO8 REVENUE STACKED BAR (Vega-Lite) ══
+const REV_COLORS = {
+  'International Student Fees': OB_GOLD,
+  'HECS-HELP (Domestic)':       '#457B9D',
+  'HELP (Domestic)':            '#1D3557',
+  'Domestic Fees':              '#A8DADC',
+  'Other Revenue':              '#C8D0D8'
+};
+
+function renderGo8Rev(){
+  const el = document.getElementById('chart-go8rev');
+  if(!el) return;
+
+  const naturalOrder = ['Univ. of Sydney','Monash University','Univ. of Melbourne','Univ. of NSW','Univ. of Queensland','Australian Natl Univ.','Univ. of Adelaide','Univ. of W. Australia'];
+
+  let allData = [];
+  go8rev.forEach(d=>{
+    allData.push(
+      {uni:d.uni, cat:'International Student Fees', v:d.intl},
+      {uni:d.uni, cat:'HECS-HELP (Domestic)', v:d.hecs},
+      {uni:d.uni, cat:'HELP (Domestic)', v:d.help},
+      {uni:d.uni, cat:'Domestic Fees', v:d.domFee},
+      {uni:d.uni, cat:'Other Revenue', v:Math.max(0,d.other)}
+    );
+  });
+
+  let data = go8RevFilter==='intl'
+    ? allData.filter(r=>r.cat==='International Student Fees')
+    : go8RevFilter==='domestic'
+    ? allData.filter(r=>['HECS-HELP (Domestic)','HELP (Domestic)','Domestic Fees'].includes(r.cat))
+    : allData;
+
+  const isPct = go8RevView==='pct';
+  const maxTotal = Math.max(...go8rev.map(d=>d.intl+d.hecs+d.help+d.domFee+Math.max(0,d.other)));
+
+  if(isPct){
+    const totals = {};
+    go8rev.forEach(d=>{ totals[d.uni]=d.intl+d.hecs+d.help+d.domFee+Math.max(0,d.other); });
+    data = data.map(r=>({...r,v:totals[r.uni]>0?Math.round(r.v/totals[r.uni]*1000)/10:0}));
+  }
+
+  const domain = Object.keys(REV_COLORS);
+  const range  = Object.values(REV_COLORS);
+
+  // Sort universities by total revenue descending
+  const totalRevOrder = go8rev
+    .slice()
+    .sort((a,b)=>b.total-a.total)
+    .map(d=>d.uni);
+
+  vegaEmbed('#chart-go8rev',{
+    $schema:'https://vega.github.io/schema/vega-lite/v5.json',
+    width:'container',height:200,background:'transparent',
+    data:{values:data},
+    mark:{type:'bar',cornerRadiusEnd:2},
+    encoding:{
+      x:{field:'uni',type:'nominal',sort:totalRevOrder,
+         axis:{title:'Top 8 universities in Australia',labelColor:CR_DARK,labelFontSize:11,titleColor:CR_DARK,titleFontSize:11}},
+      y:{field:'v',type:'quantitative',stack:true,
+         scale:isPct?{domain:[0,100]}:{domain:[0,maxTotal]},
+         axis:{format:isPct?'~r':'~s',title:isPct?'% of revenue':'AUD (2023)',
+               labelColor:CR_DARK,titleColor:CR_DARK,grid:true,gridColor:'rgba(29,53,87,0.08)'}},
+      color:{field:'cat',type:'nominal',
+        scale:{domain,range},
+        legend:{title:null,labelColor:CR_DARK,orient:'bottom',columns:5,symbolSize:80}},
+      tooltip:[
+        {field:'uni',title:'University'},
+        {field:'cat',title:'Category'},
+        {field:'v',title:isPct?'%':'AUD',format:isPct?'.1f':','}
+      ]
+    }
+  },{actions:false});
+}
+
+
+function setRevView(mode,btn){
+  go8RevView=mode;
+  ['rev-btn-abs','rev-btn-pct'].forEach(id=>document.getElementById(id)?.classList.remove('active'));
+  btn.classList.add('active');
+  renderGo8Rev();
+}
+function setRevFilter(f,btn){
+  go8RevFilter=f;
+  ['rev-f-all','rev-f-intl','rev-f-dom'].forEach(id=>document.getElementById(id)?.classList.remove('active'));
+  btn.classList.add('active');
+  renderGo8Rev();
+}
+// (renderGo8Rev also called in fonts.ready for timing safety)
+
+// ══ PIE SMALL MULTIPLES with sort toggle ══
+let pieMode='pct';
+function drawPies(sorted){
+  const grid=document.getElementById('pie-grid');if(!grid)return;grid.innerHTML='';
+  sorted.forEach(uni=>{
+    const item=document.createElement('div');item.className='pie-item';
+    const cv=document.createElement('canvas');cv.width=90;cv.height=90;
+    const ctx=cv.getContext('2d');
+    const cx=45,cy=45,r=38;
+    [[uni.govt,'#B8AFA0'],[uni.intl,G],[uni.other,SL]].forEach((seg,si)=>{
+      const start=si===0?(-Math.PI/2):(si===1?(-Math.PI/2+(uni.govt/100)*Math.PI*2):(-Math.PI/2+(uni.govt+uni.intl)/100*Math.PI*2));
+      const sweep=(seg[0]/100)*Math.PI*2;
+      ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,start,start+sweep);ctx.closePath();
+      ctx.fillStyle=seg[1];ctx.fill();
+      if(seg[0]>=10){
+        const mid=start+sweep/2;
+        ctx.fillStyle='#fff';ctx.font='bold 9px DM Sans,sans-serif';
+        ctx.textAlign='center';ctx.textBaseline='middle';
+        ctx.fillText(seg[0]+'%',cx+(r*0.6)*Math.cos(mid),cy+(r*0.6)*Math.sin(mid));
+      }
+    });
+    const nm=document.createElement('div');nm.className='pie-name';
+    nm.innerHTML=`<strong style="color:${G}">${uni.intl}%</strong><br><span style="font-size:9px;color:#4A4A6A">${uni.university}</span>`;
+    item.appendChild(cv);item.appendChild(nm);grid.appendChild(item);
+  });
+  const leg=document.getElementById('pie-legend');if(!leg)return;leg.innerHTML='';
+  [['Australian Government Funding','#B8AFA0'],['International Student Fees',G],['Other Revenue',SL]].forEach(([l,c])=>{
+    leg.innerHTML+=`<span style="display:flex;align-items:center;gap:5px;font-size:10px;color:#4A4A6A"><span style="width:10px;height:10px;border-radius:2px;background:${c};display:inline-block"></span>${l}</span>`;
+  });
+}
+function setPieMode(mode,btn){
+  pieMode=mode;
+  if(!document.getElementById('pie-btn-pct'))return;document.getElementById('pie-btn-pct').classList.toggle('active',mode==='pct');
+  document.getElementById('pie-btn-rank').classList.toggle('active',mode==='rank');
+  const sorted=mode==='pct'?[...go8]:([...go8].sort((a,b)=>b.intl-a.intl));
+  drawPies(sorted);
+}
+drawPies(go8);
+
+// ══ HEATMAP ══
+function renderHeatmap(mode){
+  if(mode==='count'){
+    vegaEmbed('#chart-heatmap',{
+      $schema:'https://vega.github.io/schema/vega-lite/v5.json',
+      width:'container',height:180,background:'transparent',
+      data:{values:fields},
+      mark:{type:'rect',cornerRadius:1},
+      encoding:{
+        x:{field:'field',type:'nominal',axis:{title:'Field of Study',labelColor:'#FFFFFF',labelAngle:-30,labelFontSize:11,titleColor:'#EEF0F5'}},
+        y:{field:'level',type:'nominal',sort:['Postgrad Research','Postgrad Coursework','Bachelor','Sub-Bachelor'],axis:{title:'Level',labelColor:'#EEF0F5',titleColor:'#EEF0F5'}},
+        color:{field:'s',type:'quantitative',
+          scale:{range:['rgba(255,200,87,0.08)','rgba(255,200,87,0.25)','rgba(255,200,87,0.48)','rgba(255,200,87,0.72)',OB_GOLD],domainMin:0},
+          legend:{title:'Students',labelColor:'#EEF0F5',titleColor:'#EEF0F5',gradientLength:110}},
+        tooltip:[{field:'level',title:'Level'},{field:'field',title:'Field'},{field:'s',title:'Students',format:','}]
+      }
+    },{actions:false});
+  } else {
+    vegaEmbed('#chart-heatmap',{
+      $schema:'https://vega.github.io/schema/vega-lite/v5.json',
+      width:'container',height:180,background:'transparent',
+      data:{values:fields},
+      mark:{type:'rect',cornerRadius:1},
+      encoding:{
+        x:{field:'field',type:'nominal',axis:{title:'Field of Study',labelColor:'#FFFFFF',labelAngle:-30,labelFontSize:11,titleColor:'#EEF0F5'}},
+        y:{field:'level',type:'nominal',sort:['Postgrad Research','Postgrad Coursework','Bachelor','Sub-Bachelor'],axis:{title:'Level',labelColor:'#EEF0F5',titleColor:'#EEF0F5'}},
+        color:{field:'band',type:'ordinal',
+          scale:{domain:['Very Low','Low','Medium','High','Very High'],
+                 range:['rgba(255,200,87,0.08)','rgba(255,200,87,0.25)','rgba(255,200,87,0.48)','rgba(255,200,87,0.72)',OB_GOLD]},
+          legend:{title:'Enrolment Band',labelColor:'#EEF0F5',titleColor:'#EEF0F5'}},
+        tooltip:[{field:'level',title:'Level'},{field:'field',title:'Field'},{field:'band',title:'Band'},{field:'s',title:'Students',format:','}]
+      }
+    },{actions:false});
+  }
+}
+function switchHeatmap(mode,btn){
+  document.querySelectorAll('.section:nth-of-type(5) .btn-group .btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderHeatmap(mode);
+}
+renderHeatmap('count');
+
+// ══ DIVERGING BAR (removed from layout) ══
+/* vegaEmbed('#chart-diverging',{
+  $schema:'https://vega.github.io/schema/vega-lite/v5.json',
+  width:'container',height:250,background:'transparent',
+  data:{values:divData},
+  mark:{type:'bar'},
+  encoding:{
+    y:{field:'f',type:'nominal',axis:{title:'',labelColor:'#1A1A2E',labelFontSize:11}},
+    x:{field:'b',type:'quantitative',scale:{domain:[-90,85]},
+       axis:{title:'← More important | Less important →',labelColor:'#4A4A6A',grid:true,gridColor:'rgba(0,0,0,0.06)',titleColor:'#4A4A6A'}},
+    x2:{field:'e'},
+    color:{field:'r',type:'nominal',
+      scale:{domain:['Very Important','Important','Neutral','Unimportant','Very Unimportant'],
+             range:[G,GL,SL,'#5DADE2','#2980B9']},
+      legend:{title:null,labelColor:'#1A1A2E',orient:'top-left',offset:2,columns:3}},
+    tooltip:[{field:'f',title:'Factor'},{field:'r',title:'Response'}]
+  }
+},{actions:false}); */
+
+// ══ MIGRATION STREAMS ══
+vegaEmbed('#chart-migration-stream',{
+  $schema:'https://vega.github.io/schema/vega-lite/v5.json',
+  width:'container',height:200,background:'transparent',
+  data:{values:migStreams},
+  mark:{type:'bar',cornerRadiusEnd:3},
+  encoding:{
+    x:{field:'stream',type:'nominal',sort:'-y',
+       axis:{title:'Migration stream',labelColor:'#1D3557',labelFontSize:10,
+             labelAngle:-30,titleColor:'#1D3557'}},
+    y:{field:'v',type:'quantitative',
+       axis:{format:'~s',title:'Number of permanent visa grants',labelColor:'#1D3557',
+             grid:true,gridColor:'rgba(255,255,255,0.07)',titleColor:'#1D3557'}},
+    color:{field:'v',type:'quantitative',
+      scale:{range:['rgba(255,200,87,0.25)','rgba(255,200,87,0.55)',OB_GOLD],domainMin:0},
+      legend:{title:'Visa grants',labelColor:'#1D3557',titleColor:'#1D3557',
+              orient:'top-right',gradientLength:80,gradientThickness:8}},
+    tooltip:[{field:'stream',title:'Migration stream'},{field:'v',title:'Visa grants',format:','}]
+  }
+},{actions:false});
+// ══ SLOPE CHART (tall, clear) ══
+let selectedMigCountry = null;
+let slopeLogScale = false;
+const migTotal2025 = migSlope.reduce((s,d)=>s+d.y2025,0);
+
+function toggleSlopeLog(btn){
+  slopeLogScale=false;
+  selectedMigCountry=null;
+  document.getElementById('slope-log-btn').style.background=OB_GOLD;
+  document.getElementById('slope-log-btn').style.color=OB_DARK;
+  document.getElementById('slope-log-btn2').style.background='transparent';
+  document.getElementById('slope-log-btn2').style.color=OB_GOLD;
+  drawDonutForCountry('all');
+  drawSlope();
+}
+function toggleSlopeLog2(btn){
+  slopeLogScale=true;
+  selectedMigCountry=null;
+  document.getElementById('slope-log-btn2').style.background=OB_GOLD;
+  document.getElementById('slope-log-btn2').style.color=OB_DARK;
+  document.getElementById('slope-log-btn').style.background='transparent';
+  document.getElementById('slope-log-btn').style.color=OB_GOLD;
+  drawDonutForCountry('all');
+  drawSlope();
+}
+
+function drawDonutForCountry(country) {
+  const titleEl = document.getElementById('mig-donut-title');
+  const statsEl = document.getElementById('mig-donut-stats');
+
+  const migColors = ['#E74C3C','#F39C12','#27AE60','#2980B9','#8E44AD','#16A085','#C9A84C','#E67E22','#1ABC9C','#7F8C8D','#95A5A6'];
+  const colorMap = {};
+  migSlope.forEach((d,i)=>colorMap[d.country]=migColors[i]);
+  colorMap['All Others'] = '#4A4A6A';
+
+  let donutData, titleText, statsText;
+
+  if (!country || country === 'all') {
+    donutData = migSlope.map(d=>({
+      country: d.country,
+      grants: d.y2025,
+      pct: ((d.y2025/migTotal2025)*100).toFixed(1)
+    }));
+    titleText = 'All Citizenships, 2024-25';
+    statsText = `Total: ${migTotal2025.toLocaleString()} grants`;
+  } else {
+    const d = migSlope.find(x=>x.country===country);
+    if (!d) return;
+
+    const rest = migTotal2025 - d.y2025;
+    donutData = [
+      {country: d.country, grants: d.y2025, pct: ((d.y2025/migTotal2025)*100).toFixed(1)},
+      {country: 'All Others', grants: rest, pct: ((rest/migTotal2025)*100).toFixed(1)}
+    ];
+    titleText = country;
+    const grew = d.y2025 > d.y2015;
+    statsText = `${d.y2025.toLocaleString()} grants (${((d.y2025/migTotal2025)*100).toFixed(1)}% of total)<br><span style="color:${grew?'#27AE60':'#C0392B'}">${grew?'▲':'▼'} ${grew?'+'+(d.y2025-d.y2015).toLocaleString():(d.y2025-d.y2015).toLocaleString()} vs 2015-16</span>`;
+  }
+
+  if (titleEl) titleEl.textContent = titleText;
+  if (statsEl) statsEl.innerHTML = statsText;
+
+  vegaEmbed('#chart-migration-donut',{
+    $schema:'https://vega.github.io/schema/vega-lite/v5.json',
+    width:240, height:240, background:'transparent',
+    data:{values:donutData},
+    mark:{type:'arc',innerRadius:0,outerRadius:105,padAngle:0.01,cornerRadius:0},
+    encoding:{
+      theta:{field:'grants',type:'quantitative'},
+      color:{field:'country',type:'nominal',
+        scale:{domain:donutData.map(d=>d.country), range:donutData.map(d=>colorMap[d.country]||'#888')},
+        legend:{title:null,labelColor:'#1D3557',orient:'bottom',columns:2}},
+      tooltip:[{field:'country',title:'Country'},{field:'grants',title:'Grants',format:','},{field:'pct',title:'Share (%)'}]
+    },
+    view:{stroke:null}
+  },{actions:false});
+}
+
+function drawSlope(){
+  const container=document.getElementById('chart-migration-slope');
+  if(!container)return;
+  const W=container.offsetWidth||500;
+  const H=520,PAD={t:55,b:28,l:130,r:70};
+  const IW=W-PAD.l-PAD.r,IH=H-PAD.t-PAD.b;
+  const allVals=migSlope.flatMap(d=>[d.y2015,d.y2025]);
+  const maxV=Math.max(...allVals)*1.08;
+  const minV=Math.min(...allVals)*0.85;
+  const cols=['#E74C3C','#F39C12','#27AE60','#2980B9','#8E44AD','#16A085','#C9A84C','#E67E22','#1ABC9C','#7F8C8D'];
+
+  const yS = slopeLogScale
+    ? v => IH - ((Math.log(v) - Math.log(minV)) / (Math.log(maxV) - Math.log(minV))) * IH
+    : v => IH - ((v - 0) / (maxV - 0)) * IH;
+
+  const logTicks = [3000,5000,10000,20000,40000,50000];
+  const linearTicks = [0,10000,20000,30000,40000,50000];
+  const ticks = slopeLogScale ? logTicks : linearTicks;
+
+  let svg=`<svg width="${W}" height="${H}" id="slope-svg-el" style="font-family:'DM Sans',sans-serif;overflow:visible;cursor:pointer">
+  <g transform="translate(${PAD.l},${PAD.t})">
+  <text x="0" y="-26" fill="${OB_GOLD}" font-size="13" font-weight="700" text-anchor="start">2015–16</text>
+  <text x="0" y="-10" fill="#1D3557" font-size="10" text-anchor="start">Visa grants</text>
+  <text x="${IW}" y="-26" fill="${OB_GOLD}" font-size="13" font-weight="700" text-anchor="end">2024–25</text>
+  <text x="${IW}" y="-10" fill="#1D3557" font-size="10" text-anchor="end">Visa grants</text>
+  <line x1="0" y1="0" x2="0" y2="${IH}" stroke="rgba(29,53,87,0.3)" stroke-width="1.5"/>
+  <line x1="${IW}" y1="0" x2="${IW}" y2="${IH}" stroke="rgba(29,53,87,0.3)" stroke-width="1.5"/>
+  ${ticks.map(v=>{
+    if(v===0) return '';
+    const y=yS(v);
+    if(y<0||y>IH) return '';
+    const label=v>=1000?(v/1000).toFixed(0)+'k':v;
+    return `<line x1="0" y1="${y}" x2="${IW}" y2="${y}" stroke="rgba(29,53,87,0.08)" stroke-width="1" stroke-dasharray="3,3"/>
+    <text x="6" y="${y-3}" font-size="9" fill="rgba(29,53,87,0.5)" text-anchor="start">${label}</text>`;
+  }).join('')}`;
+
+  migSlope.forEach((d,i)=>{
+    const y1=yS(d.y2015),y2=yS(d.y2025),c=cols[i],grew=d.y2025>d.y2015;
+    const isSelected = selectedMigCountry === d.country;
+    const opacity = (!selectedMigCountry || isSelected) ? 1 : 0.15;
+    const lw = isSelected ? 3.5 : (grew?2.5:1.5);
+    // Left: "40,145 India" — number then country on one line
+    const leftLabel = `${d.y2015.toLocaleString()} ${d.country}`;
+    // Right: "▲ 48,326" — arrow + number only
+    const rightLabel = `${grew?'▲':'▼'} ${d.y2025.toLocaleString()}`;
+    // Left: number in grey smaller, then country in colour — two separate text elements on same y
+    svg+=`<g class="slope-country" data-country="${d.country}" style="cursor:pointer;opacity:${opacity}">
+    <line x1="0" y1="${y1}" x2="${IW}" y2="${y2}" stroke="${c}" stroke-width="${lw}"/>
+    <circle cx="0" cy="${y1}" r="5" fill="${c}"/>
+    <circle cx="${IW}" cy="${y2}" r="5" fill="${c}"/>
+    <text x="-8" y="${y1+4}" fill="${c}" font-size="10.5" text-anchor="end" font-weight="${isSelected?700:500}"><tspan fill="rgba(29,53,87,0.45)" font-size="9">${d.y2015.toLocaleString()} </tspan>${d.country}</text>
+    <text x="${IW+8}" y="${y2+4}" fill="${c}" font-size="10.5" text-anchor="start" font-weight="${isSelected?700:400}">${rightLabel}</text>
+    </g>`;
+  });
+  svg+=`</g></svg>`;
+  container.innerHTML=svg;
+
+  const svgEl=container.querySelector('svg');
+  svgEl.addEventListener('click',function(e){
+    const rect=svgEl.getBoundingClientRect();
+    const rawX=(e.clientX-rect.left)*(W/rect.width);
+    const rawY=(e.clientY-rect.top)*(H/rect.height);
+    const cx=rawX-PAD.l;
+    const cy=rawY-PAD.t;
+    const frac=Math.max(0,Math.min(1,cx/IW));
+    let best=null,bestDist=35;
+    migSlope.forEach((d)=>{
+      const y1=yS(d.y2015),y2=yS(d.y2025);
+      const lineY=y1+(y2-y1)*frac;
+      const dist=Math.abs(cy-lineY);
+      if(dist<bestDist){bestDist=dist;best=d.country;}
+    });
+    slopeClick(best);
+  });
+}
+
+function slopeClick(country){
+  if(!country || selectedMigCountry===country){
+    selectedMigCountry=null;
+    drawDonutForCountry('all');
+  } else {
+    selectedMigCountry=country;
+    drawDonutForCountry(country);
+  }
+  drawSlope();
+}
+
+
+
+// ══ SANKEY: Education Type → Residency Outcome (2010–11 cohort → 2021–22) ══
+// Data: Jobs & Skills Australia / Dept of Education, PLIDA, Dec 2024
+// Higher Education: 243,640 students → Left 50%, PR/Citizen 45%, Temp 5%
+// VET: 119,190 students → Left 35%, PR/Citizen 56%, Temp 10% (rounded from source)
+// Note: percentages from source round to totals shown; small rounding applied
+
+function drawSankey() {
+  const el = document.getElementById('chart-sankey');
+  if (!el) return;
+  const W = el.offsetWidth || 860;
+  const H = 420;
+  const PAD = {l:200, r:240, t:58, b:24};
+  const IW = W - PAD.l - PAD.r;
+  const IH = H - PAD.t - PAD.b;
+
+  const C_HE   = OB_GOLD;      // gold – Higher Education
+  const C_VET  = '#457B9D';    // steel blue – VET
+  const C_LEFT = '#1D3557';    // dark navy – left Australia
+  const C_PR   = OB_GOLD;      // gold – permanent resident (the key outcome)
+  const C_TEMP = '#A8DADC';    // aqua – temporary visa
+
+  // Data: Dept of Education / JSA PLIDA Dec 2024
+  // HE 2010-11: 243,640 | VET 2010-11: 119,190
+  // HE outcomes: Left 50%, PR/Citizen 45%, Temp 5%
+  // VET outcomes: Left 35%, PR/Citizen 56%, Temp 10%
+  const HE = 243640, VET = 119190, TOTAL = HE + VET;
+
+  const flows = [
+    {from:'HE',  to:'Left',  v:Math.round(HE*0.50),  pctSrc:50,  c1:C_HE,  c2:C_LEFT},
+    {from:'HE',  to:'PR',    v:Math.round(HE*0.45),  pctSrc:45,  c1:C_HE,  c2:C_PR},
+    {from:'HE',  to:'Temp',  v:Math.round(HE*0.05),  pctSrc:5,   c1:C_HE,  c2:C_TEMP},
+    {from:'VET', to:'Left',  v:Math.round(VET*0.35), pctSrc:35,  c1:C_VET, c2:C_LEFT},
+    {from:'VET', to:'PR',    v:Math.round(VET*0.56), pctSrc:56,  c1:C_VET, c2:C_PR},
+    {from:'VET', to:'Temp',  v:Math.round(VET*0.10), pctSrc:10,  c1:C_VET, c2:C_TEMP},
+  ];
+
+  const srcNodes = [
+    {id:'HE',  label:'Higher Education', v:HE,  col:C_HE},
+    {id:'VET', label:'VET',              v:VET, col:C_VET},
+  ];
+  const tgtOrder = ['Left','PR','Temp'];
+  const tgtLabel1 = {Left:'Left Australia', PR:'Permanent resident', Temp:'Temporary visa'};
+  const tgtLabel2 = {Left:'',               PR:'or citizen',         Temp:''};
+  const tgtCols   = {Left:C_LEFT, PR:C_PR, Temp:C_TEMP};
+
+  // Source node layout: with visible gap between HE and VET
+  const GAP_S = 20;
+  const totalSrcH = IH - GAP_S;
+  const srcH = {HE:(HE/TOTAL)*totalSrcH, VET:(VET/TOTAL)*totalSrcH};
+  let sy = PAD.t;
+  srcNodes.forEach(n=>{ n.y=sy; n.h=srcH[n.id]; sy+=n.h+GAP_S; });
+
+  // Target node layout: with gaps between all three outcomes
+  const GAP_T = 18;
+  const tgtTotals = {};
+  tgtOrder.forEach(t=>{ tgtTotals[t]=flows.filter(f=>f.to===t).reduce((s,f)=>s+f.v,0); });
+  const totalTgt = Object.values(tgtTotals).reduce((a,b)=>a+b,0);
+  const totalTgtH = IH - GAP_T*(tgtOrder.length-1);
+  let ty = PAD.t;
+  const tgtNodes = {};
+  tgtOrder.forEach(id=>{
+    tgtNodes[id]={y:ty, h:(tgtTotals[id]/totalTgt)*totalTgtH};
+    ty+=tgtNodes[id].h+GAP_T;
+  });
+
+  const srcFill={HE:0,VET:0};
+  const tgtFill={Left:0,PR:0,Temp:0};
+
+  // Build SVG
+  let defs = flows.map((f,i)=>{
+    return `<linearGradient id="sg${i}" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="${f.c1}" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="${f.c2}" stop-opacity="0.7"/>
+    </linearGradient>`;
+  }).join('');
+
+  // Store flow metadata for tooltips
+  const flowMeta = [];
+
+  let paths = flows.map((f,i)=>{
+    const sn=srcNodes.find(n=>n.id===f.from);
+    const tn=tgtNodes[f.to];
+    const sh=(f.v/TOTAL)*totalSrcH;
+    const th=(f.v/totalTgt)*totalTgtH;
+    const sy0=sn.y+srcFill[f.from];
+    const ty0=tn.y+tgtFill[f.to];
+    srcFill[f.from]+=sh;
+    tgtFill[f.to]+=th;
+    const x1=PAD.l+8, x2=PAD.l+IW-8;
+    const cpx=PAD.l+IW/2;
+    const path=`M${x1},${sy0} C${cpx},${sy0} ${cpx},${ty0} ${x2},${ty0} L${x2},${ty0+th} C${cpx},${ty0+th} ${cpx},${sy0+sh} ${x1},${sy0+sh} Z`;
+    flowMeta.push({
+      idx:i, from:f.from, to:f.to, v:f.v, pct:f.pctSrc,
+      srcLabel: f.from==='HE'?'Higher Education':'VET',
+      tgtLabel: tgtLabel1[f.to]+(tgtLabel2[f.to]?' '+tgtLabel2[f.to]:'')
+    });
+    return `<path class="sankey-path" data-idx="${i}" d="${path}" fill="url(#sg${i})" opacity="0.85" style="cursor:pointer;transition:opacity .15s"/>
+      `;
+  }).join('');
+
+  let srcSvg = srcNodes.map(n=>`
+    <rect x="${PAD.l}" y="${n.y}" width="10" height="${n.h}" fill="${n.col}" rx="3"/>
+    <text x="${PAD.l-12}" y="${n.y+n.h/2-8}" text-anchor="end" dominant-baseline="middle" font-size="12" fill="#1D3557" font-weight="700">${n.label}</text>
+    <text x="${PAD.l-12}" y="${n.y+n.h/2+8}" text-anchor="end" dominant-baseline="middle" font-size="10" fill="#457B9D">${(n.v/1000).toFixed(0)}k students</text>
+  `).join('');
+
+  let tgtSvg = tgtOrder.map(id=>{
+    const tn=tgtNodes[id];
+    const lb2=tgtLabel2[id];
+    const yBase=tn.y+tn.h/2;
+    const y1=lb2?yBase-9:yBase;
+    const y2=yBase+8;
+    const yv=lb2?yBase+26:yBase+15;
+    const totalV=tgtTotals[id];
+    const pctOfTotal=Math.round(totalV/TOTAL*100);
+    return `<rect x="${PAD.l+IW-10}" y="${tn.y}" width="10" height="${tn.h}" fill="${tgtCols[id]}" rx="3"/>
+      <text x="${PAD.l+IW+18}" y="${y1}" dominant-baseline="middle" font-size="12" fill="#1D3557" font-weight="700">${tgtLabel1[id]}</text>
+      ${lb2?`<text x="${PAD.l+IW+18}" y="${y2}" dominant-baseline="middle" font-size="12" fill="#1D3557" font-weight="700">${lb2}</text>`:''}
+      <text x="${PAD.l+IW+18}" y="${yv}" dominant-baseline="middle" font-size="10" fill="#457B9D">${(totalV/1000).toFixed(0)}k &nbsp;(${pctOfTotal}% of cohort)</text>`;
+  }).join('');
+
+  el.innerHTML = `<svg width="${W}" height="${H}" style="font-family:'DM Sans',sans-serif;overflow:visible">
+    <text x="${PAD.l+8}" y="${PAD.t-20}" font-size="12" font-weight="600" fill="#1D3557">Education in 2010-11</text>
+    <text x="${PAD.l+IW-8}" y="${PAD.t-20}" text-anchor="end" font-size="12" font-weight="600" fill="#1D3557">Residency status in 2021-22</text>
+    <defs>${defs}</defs>
+    ${paths}${srcSvg}${tgtSvg}
+  </svg>`;
+
+  // Tooltip interactivity
+  const tip = document.getElementById('sankey-tip');
+  el.querySelectorAll('.sankey-path').forEach(p=>{
+    p.addEventListener('mouseenter', function(e){
+      const m = flowMeta[+this.dataset.idx];
+      this.style.opacity='1';
+      tip.innerHTML = `<strong style="color:#FFC857">${m.srcLabel} → ${m.tgtLabel}</strong><br>
+        ${m.v.toLocaleString()} students &nbsp;(${m.pct}% of ${m.srcLabel} cohort)`;
+      tip.style.display='block';
+    });
+    p.addEventListener('mousemove', function(e){
+      tip.style.left=(e.clientX+14)+'px';
+      tip.style.top=(e.clientY-10)+'px';
+    });
+    p.addEventListener('mouseleave', function(){
+      this.style.opacity='0.85';
+      tip.style.display='none';
+    });
+  });
+}
+
+
+// ══ SKILLS TARGET CHART (Section 4) ══
+function drawSkillsTarget(){
+  const el = document.getElementById('chart-skills-target');
+  if(!el) return;
+  const W = el.offsetWidth||320, H = 370;
+  const cx=W/2, cy=H/2-25;
+
+  // Data: Study Australia Intl Student Survey 2023
+  // Q: skills gained from studying in Australia
+  const stats = [
+    {pct:91, label:'Problem-solving skills',          color:OB_GOLD,   r:118},
+    {pct:88, label:'Communication in English',        color:'#457B9D',   r:97},
+    {pct:84, label:'Teamwork and collaboration',      color:'#1D3557', r:76},
+    {pct:79, label:'Technical / professional skills', color:'#A8DADC',  r:55}
+  ];
+
+  let parts = `<svg width="${W}" height="${H}" style="font-family:'DM Sans',sans-serif;overflow:visible">`;
+
+  stats.forEach(s=>{
+    const circ = 2*Math.PI*s.r;
+    const fillLen = (s.pct/100)*circ;
+    // Background track
+    parts += `<circle cx="${cx}" cy="${cy}" r="${s.r}" fill="none"
+      stroke="rgba(255,255,255,0.08)" stroke-width="12"/>`;
+    // Filled arc from top
+    parts += `<circle cx="${cx}" cy="${cy}" r="${s.r}" fill="none"
+      stroke="${s.color}" stroke-width="12" stroke-linecap="round"
+      stroke-dasharray="${fillLen} ${circ}"
+      transform="rotate(-90 ${cx} ${cy})"/>`;
+
+    // % label at END of arc, placed INSIDE the stroke (inward by stroke/2)
+    const endAngleDeg = -90 + (s.pct/100)*360;
+    const endAngleRad = endAngleDeg * Math.PI/180;
+    // Place 6px inside the arc edge
+    const labelR = s.r - 2;
+    const lx = cx + labelR * Math.cos(endAngleRad);
+    const ly = cy + labelR * Math.sin(endAngleRad);
+    parts += `<text x="${lx}" y="${ly+4}" font-size="10" font-weight="700"
+      fill="#fff" text-anchor="middle">${s.pct}%</text>`;
+  });
+
+  // Centre label
+  parts += `<circle cx="${cx}" cy="${cy}" r="38" fill="rgba(255,200,87,0.1)"
+    stroke="rgba(255,200,87,0.25)" stroke-width="1"/>
+    <text x="${cx}" y="${cy-5}" text-anchor="middle" font-size="11" font-weight="600" fill="#EEF0F5">Graduate</text>
+    <text x="${cx}" y="${cy+11}" text-anchor="middle" font-size="11" font-weight="600" fill="#EEF0F5">skills</text>`;
+
+  // Legend below   white text, enough spacing from rings
+  const legY = cy + 148;
+  stats.forEach((s,i)=>{
+    const col = i%2===0 ? 6 : W/2+4;
+    const row = legY + Math.floor(i/2)*22;
+    parts += `<circle cx="${col+5}" cy="${row-3}" r="5" fill="${s.color}"/>
+      <text x="${col+14}" y="${row+2}" font-size="9.5" fill="#FFFFFF">${s.label}</text>`;
+  });
+
+  parts += '</svg>';
+  el.innerHTML = parts;
+}
+
+// ══ INIT ══
+document.fonts.ready.then(()=>{
+  drawSankey();
+  drawSkillsTarget();
+  renderGo8Rev();
+  drawSlope();
+  drawLollipop();
+  drawFlowMap();
+  drawCampusMap();
+  drawDonutForCountry('all');
+  renderStateMap('all');
+  renderBubble('all');
+});
+window.addEventListener('resize',()=>{
+  drawSankey();
+  drawSkillsTarget();
+  drawSlope();
+  drawLollipop();
+  drawFlowMap();
+  drawCampusMap();
+});
+</script>
+</body>
+</html>
